@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FinBestie Quiz</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="quiz">
+    <main class="stage">
+      <aside class="brand-panel" aria-label="Arah visual">
+        <div class="brand-pill"><span class="brand-dot"></span> Recommendation Engine</div>
+        <h1>Budget Quiz</h1>
+        <p>Satu pertanyaan per layar agar quiz terasa ringan dan engaging.</p>
+      </aside>
+      <section class="phone-shell" aria-label="Mobile app preview">
+        <div class="app">
+          <section class="screen">
+            <div class="topbar">
+              <button class="icon-btn" type="button" id="quizBack" aria-label="Kembali">‹</button>
+            </div>
+            <div class="content">
+              <div class="quiz-progress"><span id="quizBar"></span></div>
+              <div class="quiz-head">
+                <span class="quiz-count" id="quizCount">Question 1/5</span>
+                <h2 class="quiz-title" id="quizQuestion"></h2>
+              </div>
+              <div class="option-list" id="quizOptions"></div>
+            </div>
+            <div class="bottom-dock">
+              <button class="primary-btn" type="button" id="quizNext">Pilih jawaban dulu</button>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FinBestie Auto Budget</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="budget-preview">
+    <main class="stage">
+      <aside class="brand-panel" aria-label="Arah visual">
+        <div class="brand-pill"><span class="brand-dot"></span> Auto-Budget Preview</div>
+        <h1>No Blank State</h1>
+        <p>Kategori dan limit awal dibuat otomatis berdasarkan metode pilihan user.</p>
+      </aside>
+      <section class="phone-shell" aria-label="Mobile app preview">
+        <div class="app">
+          <section class="screen">
+            <div class="topbar">
+              <a class="icon-btn" href="result.html" aria-label="Kembali">‹</a>
+              <a class="skip-btn" href="quiz.html">Ulangi</a>
+            </div>
+            <div class="content budget-content">
+              <span class="quiz-count">Auto-Budget Setup</span>
+              <h2 class="quiz-title">No blank state hell.</h2>
+              <p class="lede" id="budgetIntro"></p>
+              <div class="budget-income-card">
+                <span>Monthly income sample</span>
+                <strong>Rp 8.000.000</strong>
+              </div>
+              <div class="allocation" id="allocation"></div>
+              <div class="budget-list" id="budgetList"></div>
+            </div>
+            <div class="bottom-dock">
+              <button class="primary-btn" type="button">Looks Good, Let's Go!</button>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>
