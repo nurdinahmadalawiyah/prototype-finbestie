@@ -11,7 +11,7 @@ The prototype focuses on:
 - Interactive budgeting quiz
 - Recommendation reveal
 - Auto-budget preview
-- Main app navigation screens
+- Main app navigation screens (DASHBOARD / HOME, TRANSACTION, GOALS & SINKING FUNDS, GOLD VAULT (Brankas Emas))
 - Modal bottom sheet data-entry screens
 - Weekly insights, profile badge room, and settings screens
 
