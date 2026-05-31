@@ -149,8 +149,12 @@ function setState(patch) {
   sessionStorage.setItem("plannerState", JSON.stringify({ ...getState(), ...patch }));
 }
 
+function initialScores() {
+  return Object.fromEntries(Object.keys(methods).map((key) => [key, 0]));
+}
+
 function resetQuiz() {
-  setState({ quizIndex: 0, scores: Object.fromEntries(Object.keys(methods).map((key) => [key, 0])), selectedMethod: "rule503020" });
+  setState({ quizIndex: 0, answers: [], scores: initialScores(), selectedMethod: "rule503020" });
 }
 
 function topMethod(scores) {
@@ -217,8 +221,8 @@ function initAuth() {
 
 function initQuiz() {
   const state = getState();
-  const scores = state.scores || Object.fromEntries(Object.keys(methods).map((key) => [key, 0]));
   let quizIndex = Number(state.quizIndex || 0);
+  let answers = Array.isArray(state.answers) ? state.answers : [];
   let selected = "";
   const back = document.querySelector("#quizBack");
   const bar = document.querySelector("#quizBar");
@@ -229,19 +233,20 @@ function initQuiz() {
 
   function render() {
     const current = questions[quizIndex];
-    selected = "";
+    selected = answers[quizIndex] || "";
     back.hidden = quizIndex === 0;
     bar.style.width = `${((quizIndex + 1) / questions.length) * 100}%`;
     count.textContent = `Question ${quizIndex + 1}/5`;
     question.textContent = current.question;
-    next.textContent = "Pilih jawaban dulu";
+    next.disabled = !selected;
+    next.textContent = selected ? (quizIndex === questions.length - 1 ? "Lihat rekomendasi ->" : "Lanjut ->") : "Pilih jawaban dulu";
     options.innerHTML = current.options.map(([label, value, hint], index) => `
-      <button class="option-card" type="button" data-value="${value}">
+      <button class="option-card ${value === selected ? "selected" : ""}" type="button" data-value="${value}">
         <span class="option-mark">${index + 1}</span>
         <span class="option-text"><strong>${label}</strong><span>${hint}</span></span>
       </button>
     `).join("");
-    setState({ quizIndex, scores });
+    setState({ quizIndex, answers });
   }
 
   options.addEventListener("click", (event) => {
@@ -250,24 +255,30 @@ function initQuiz() {
     selected = option.dataset.value;
     options.querySelectorAll(".option-card").forEach((card) => card.classList.remove("selected"));
     option.classList.add("selected");
+    next.disabled = false;
     next.textContent = quizIndex === questions.length - 1 ? "Lihat rekomendasi ->" : "Lanjut ->";
   });
 
   next.addEventListener("click", () => {
     if (!selected) return;
-    scores[selected] += 1;
+    answers[quizIndex] = selected;
     if (quizIndex < questions.length - 1) {
       quizIndex += 1;
       render();
     } else {
+      const scores = initialScores();
+      answers.forEach((answer) => {
+        if (scores[answer] !== undefined) scores[answer] += 1;
+      });
       const selectedMethod = topMethod(scores);
-      setState({ scores, selectedMethod });
+      setState({ quizIndex, answers, scores, selectedMethod });
       location.href = "result.html";
     }
   });
 
   back.addEventListener("click", () => {
-    quizIndex = Math.max(0, quizIndex - 1);
+    if (quizIndex === 0) return;
+    quizIndex -= 1;
     render();
   });
 
@@ -348,6 +359,31 @@ function initRetakeLinks() {
   });
 }
 
+function applyTheme() {
+  document.body.classList.toggle("light-mode", sessionStorage.getItem("plannerTheme") === "light");
+}
+
+function initSettings() {
+  const darkToggle = document.querySelector("[data-setting='dark-mode']");
+  if (!darkToggle) return;
+  darkToggle.checked = sessionStorage.getItem("plannerTheme") !== "light";
+  darkToggle.addEventListener("change", () => {
+    sessionStorage.setItem("plannerTheme", darkToggle.checked ? "dark" : "light");
+    applyTheme();
+  });
+}
+
+function initFilterChips() {
+  document.querySelectorAll(".filter-row").forEach((row) => {
+    row.addEventListener("click", (event) => {
+      const chip = event.target.closest(".filter-chip");
+      if (!chip) return;
+      row.querySelectorAll(".filter-chip").forEach((item) => item.classList.remove("active"));
+      chip.classList.add("active");
+    });
+  });
+}
+
 function initSheets() {
   const openButtons = document.querySelectorAll("[data-open-sheet]");
   const sheets = document.querySelectorAll("[data-sheet]");
@@ -408,11 +444,14 @@ function initSheets() {
 }
 
 const page = document.body.dataset.page;
+applyTheme();
 if (page === "onboarding") initOnboarding();
 if (page === "auth") initAuth();
 if (page === "quiz") initQuiz();
 if (page === "result") initResult();
 if (page === "budget-preview") initBudgetPreview();
 if (page === "profile") initProfile();
+if (page === "settings") initSettings();
 initRetakeLinks();
+initFilterChips();
 initSheets();
