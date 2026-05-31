@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FinBestie Gold Vault</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="gold">
+    <main class="stage">
+      <aside class="brand-panel" aria-label="Arah visual">
+        <div class="brand-pill"><span class="brand-dot"></span> Brankas Emas</div>
+        <h1>Gold Vault</h1>
+        <p>Unique Indonesian advantage: harga Antam, inventaris gram, dan integrasi goal.</p>
+      </aside>
+      <section class="phone-shell" aria-label="Mobile app preview">
+        <div class="app">
+          <section class="screen">
+            <div class="topbar main-top">
+              <div class="main-title-block">
+                <span>Antam Today</span>
+                <h2>Gold Vault</h2>
+              </div>
+              <button class="round-action" type="button" data-open-sheet="gold" aria-label="Tambah emas">+</button>
+            </div>
+            <div class="content main-content">
+              <div class="gold-hero-card">
+                <span>Harga Antam hari ini</span>
+                <strong>Rp 1.342K/g</strong>
+                <div class="gold-chart" aria-hidden="true">
+                  <i style="height: 44px"></i><i style="height: 52px"></i><i style="height: 48px"></i><i style="height: 64px"></i><i style="height: 72px"></i><i style="height: 68px"></i><i style="height: 84px"></i>
+                </div>
+              </div>
+              <div class="gold-summary">
+                <div class="summary-card"><i>g</i><b>7 gram</b><span>Total kepemilikan</span></div>
+                <div class="summary-card"><i>Rp</i><b>Rp 8.9M</b><span>Avg cost value</span></div>
+              </div>
+              <div class="vault-list">
+                <div class="vault-item"><span class="vault-icon">An</span><div><b>Antam 5g</b><span>Beli Rp 1.210K/g · Toko LM</span></div><em>+10.9%</em></div>
+                <div class="vault-item"><span class="vault-icon">UB</span><div><b>UBS 2g</b><span>Beli Rp 1.185K/g · Marketplace</span></div><em>+13.2%</em></div>
+                <div class="vault-item"><span class="vault-icon">Ng</span><div><b>Goal Nikah</b><span>Kurang 13 gram lagi dari target 20g</span></div><em>35%</em></div>
+              </div>
+            </div>
+            <nav class="bottom-nav" aria-label="Main navigation">
+              <a href="dashboard.html"><span class="nav-symbol">H</span>Home</a>
+              <a href="transactions.html"><span class="nav-symbol">T</span>Kas</a>
+              <a href="goals.html"><span class="nav-symbol">G</span>Goals</a>
+              <a class="active" href="gold.html"><span class="nav-symbol">Au</span>Gold</a>
+            </nav>
+            <div class="sheet-backdrop" data-sheet="gold" aria-hidden="true">
+              <div class="bottom-sheet" role="dialog" aria-modal="true" aria-labelledby="goldSheetTitle">
+                <button class="sheet-close" type="button" data-close-sheet aria-label="Tutup">×</button>
+                <span class="sheet-handle"></span>
+                <div class="sheet-head">
+                  <span>Gold Vault</span>
+                  <h3 id="goldSheetTitle">Add gold asset</h3>
+                </div>
+                <div class="gold-type-row" aria-label="Jenis emas">
+                  <button class="category-chip active" type="button"><i>An</i>Antam</button>
+                  <button class="category-chip" type="button"><i>UB</i>UBS</button>
+                  <button class="category-chip" type="button"><i>Pr</i>Perhiasan</button>
+                </div>
+                <div class="form-grid">
+                  <label class="sheet-field"><span>Gramasi</span><input type="number" value="2" step="0.1" /></label>
+                  <label class="sheet-field"><span>Harga beli / gram</span><input type="text" value="Rp 1.250.000" /></label>
+                  <label class="sheet-field"><span>Tanggal beli</span><input type="date" value="2026-05-31" /></label>
+                  <label class="sheet-field"><span>Lokasi beli</span><input type="text" value="Butik Antam" /></label>
+                </div>
+                <button class="primary-btn" type="button" data-close-sheet>Save gold asset</button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>

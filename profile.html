@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FinBestie Badge Room</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="profile">
+    <main class="stage">
+      <aside class="brand-panel" aria-label="Arah visual">
+        <div class="brand-pill"><span class="brand-dot"></span> Badge Room</div>
+        <h1>Profile</h1>
+        <p>Ruang untuk melihat badge, aturan metode budgeting, dan retake quiz.</p>
+      </aside>
+      <section class="phone-shell" aria-label="Mobile app preview">
+        <div class="app">
+          <section class="screen">
+            <div class="topbar main-top">
+              <a class="icon-btn" href="dashboard.html" aria-label="Kembali">‹</a>
+              <a class="ghost-btn" href="settings.html">Settings</a>
+            </div>
+            <div class="content main-content">
+              <section class="badge-room-hero">
+                <div class="badge-room-logo profile-medal" id="badgeRoomLogo" data-logo="balance" aria-hidden="true"><span></span></div>
+                <span>Financial Profile</span>
+                <h2 id="profileBadgeName">The Balanced Harmonist</h2>
+                <p id="profileBadgeCopy">Kamu cocok dengan sistem yang simpel: kebutuhan aman, lifestyle tetap hidup, tabungan jalan.</p>
+              </section>
+
+              <div class="method-summary">
+                <span>Current method</span>
+                <b id="profileMethodName">50/30/20 Rule</b>
+                <p id="profileMethodCopy">Bagi income bulanan ke tiga bucket besar supaya budgeting terasa ringan tapi tetap terarah.</p>
+              </div>
+
+              <div class="rule-grid" id="profileRuleGrid">
+                <div class="rule-card"><strong>50%</strong><span>Needs</span><p>Makan, sewa, transport, dan tagihan utama.</p></div>
+                <div class="rule-card coral"><strong>30%</strong><span>Wants</span><p>Hiburan, jajan, belanja non-esensial.</p></div>
+                <div class="rule-card mint"><strong>20%</strong><span>Save</span><p>Tabungan, goals, emergency fund, dan utang.</p></div>
+              </div>
+
+              <div class="profile-actions">
+                <a class="primary-btn" href="quiz.html" data-retake-quiz>Retake quiz</a>
+                <a class="secondary-link" href="result.html">Lihat semua profile</a>
+              </div>
+            </div>
+            <nav class="bottom-nav" aria-label="Main navigation">
+              <a class="active" href="dashboard.html"><span class="nav-symbol">H</span>Home</a>
+              <a href="transactions.html"><span class="nav-symbol">T</span>Kas</a>
+              <a href="goals.html"><span class="nav-symbol">G</span>Goals</a>
+              <a href="gold.html"><span class="nav-symbol">Au</span>Gold</a>
+            </nav>
+          </section>
+        </div>
+      </section>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>

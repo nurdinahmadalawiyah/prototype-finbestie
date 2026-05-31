@@ -47,6 +47,29 @@ const budgetTemplates = {
   fire: [["Essentials", "Lean living", "Rp 3.000.000"], ["Invest", "Aggressive allocation", "Rp 3.500.000"], ["Buffer", "Cash reserve", "Rp 1.500.000"]],
 };
 
+const profileRules = {
+  kakeibo: {
+    summary: "Catat semua income dan expense secara detail, lalu review kebiasaan belanja tiap minggu.",
+    rules: [["Log", "Daily", "Semua transaksi masuk buku kas."], ["Reflect", "Weekly", "Lihat kategori yang paling bocor."], ["Adjust", "Next", "Turunkan limit setelah pola terlihat."]],
+  },
+  rule503020: {
+    summary: "Bagi income bulanan ke tiga bucket besar supaya budgeting terasa ringan tapi tetap terarah.",
+    rules: [["50%", "Needs", "Makan, sewa, transport, dan tagihan utama."], ["30%", "Wants", "Hiburan, jajan, belanja non-esensial."], ["20%", "Save", "Tabungan, goals, emergency fund, dan utang."]],
+  },
+  zero: {
+    summary: "Setiap rupiah punya tugas sebelum bulan berjalan, jadi tidak ada uang yang menganggur.",
+    rules: [["Assign", "Income", "Masukkan seluruh income ke kategori."], ["Zero", "Idle", "Sisa uang harus jelas tujuannya."], ["Review", "Priority", "Pindahkan dana saat prioritas berubah."]],
+  },
+  sinking: {
+    summary: "Uang diarahkan ke target spesifik, lalu kontribusi rutin dibuat otomatis.",
+    rules: [["Name", "Goal", "Buat target yang jelas."], ["Split", "Monthly", "Cicil dana sedikit demi sedikit."], ["Track", "Progress", "Pantau progress sampai siap dipakai."]],
+  },
+  fire: {
+    summary: "Mode agresif untuk menekan expense dan memperbesar porsi investasi jangka panjang.",
+    rules: [["Lean", "Spend", "Potong expense yang tidak penting."], ["Grow", "Invest", "Naikkan saving dan investing rate."], ["Freedom", "Plan", "Hitung jalan menuju pensiun dini."]],
+  },
+};
+
 const intros = [
   {
     art: "cashflow",
@@ -299,9 +322,97 @@ function initBudgetPreview() {
   `).join("");
 }
 
+function initProfile() {
+  const methodKey = getState().selectedMethod || "rule503020";
+  const data = methods[methodKey];
+  const ruleData = profileRules[methodKey];
+  document.querySelector("#badgeRoomLogo").dataset.logo = profileLogos[methodKey];
+  document.querySelector("#profileBadgeName").textContent = data.badge;
+  document.querySelector("#profileBadgeCopy").textContent = data.copy;
+  document.querySelector("#profileMethodName").textContent = data.method;
+  document.querySelector("#profileMethodCopy").textContent = ruleData.summary;
+  document.querySelector("#profileRuleGrid").innerHTML = ruleData.rules.map(([value, label, copy], index) => `
+    <div class="rule-card ${index === 1 ? "coral" : index === 2 ? "mint" : ""}">
+      <strong>${value}</strong><span>${label}</span><p>${copy}</p>
+    </div>
+  `).join("");
+}
+
+function initRetakeLinks() {
+  document.querySelectorAll("[data-retake-quiz]").forEach((link) => {
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      resetQuiz();
+      location.href = "quiz.html";
+    });
+  });
+}
+
+function initSheets() {
+  const openButtons = document.querySelectorAll("[data-open-sheet]");
+  const sheets = document.querySelectorAll("[data-sheet]");
+  if (!openButtons.length && !sheets.length) return;
+
+  function closeSheets() {
+    sheets.forEach((sheet) => {
+      sheet.classList.remove("open");
+      sheet.setAttribute("aria-hidden", "true");
+    });
+  }
+
+  openButtons.forEach((button) => {
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      const sheet = document.querySelector(`[data-sheet="${button.dataset.openSheet}"]`);
+      if (!sheet) return;
+      closeSheets();
+      sheet.classList.add("open");
+      sheet.setAttribute("aria-hidden", "false");
+    });
+  });
+
+  sheets.forEach((sheet) => {
+    sheet.addEventListener("click", (event) => {
+      if (event.target === sheet || event.target.closest("[data-close-sheet]")) {
+        closeSheets();
+      }
+    });
+
+    sheet.querySelectorAll(".category-chip").forEach((chip) => {
+      chip.addEventListener("click", () => {
+        const group = chip.parentElement;
+        group.querySelectorAll(".category-chip").forEach((item) => item.classList.remove("active"));
+        chip.classList.add("active");
+      });
+    });
+
+    const amount = sheet.querySelector(".amount-value");
+    if (amount) {
+      let rawAmount = "";
+      sheet.querySelectorAll("[data-key]").forEach((key) => {
+        key.addEventListener("click", () => {
+          const value = key.dataset.key;
+          if (value === "clear") rawAmount = "";
+          else if (value === "back") rawAmount = rawAmount.slice(0, -1);
+          else rawAmount = `${rawAmount}${value}`.replace(/^0+/, "");
+          const number = Number(rawAmount || 0);
+          amount.textContent = `Rp ${number.toLocaleString("id-ID")}`;
+        });
+      });
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeSheets();
+  });
+}
+
 const page = document.body.dataset.page;
 if (page === "onboarding") initOnboarding();
 if (page === "auth") initAuth();
 if (page === "quiz") initQuiz();
 if (page === "result") initResult();
 if (page === "budget-preview") initBudgetPreview();
+if (page === "profile") initProfile();
+initRetakeLinks();
+initSheets();

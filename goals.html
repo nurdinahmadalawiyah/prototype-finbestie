@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FinBestie Goals</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="goals">
+    <main class="stage">
+      <aside class="brand-panel" aria-label="Arah visual">
+        <div class="brand-pill"><span class="brand-dot"></span> Sinking Funds</div>
+        <h1>Goals</h1>
+        <p>Kartu target finansial dengan progress yang mudah dipantau.</p>
+      </aside>
+      <section class="phone-shell" aria-label="Mobile app preview">
+        <div class="app">
+          <section class="screen">
+            <div class="topbar main-top">
+              <div class="main-title-block">
+                <span>Goals & Funds</span>
+                <h2>Goal Crusher</h2>
+              </div>
+              <button class="round-action" type="button" data-open-sheet="goal" aria-label="Tambah goal">+</button>
+            </div>
+            <div class="content main-content">
+              <div class="goal-list">
+                <div class="goal-card">
+                  <div class="goal-head"><div><b>Dana Nikah</b><span>Target Rp 120.000.000</span></div><div class="goal-ring" style="--value: 42%">42%</div></div>
+                  <div class="progress-track"><i style="--value: 42%"></i></div>
+                  <div class="goal-meta"><span>Rp 50.4M terkumpul</span><span>Rp 2M/bulan</span></div>
+                </div>
+                <div class="goal-card">
+                  <div class="goal-head"><div><b>Laptop Baru</b><span>Target Rp 18.000.000</span></div><div class="goal-ring" style="--value: 68%">68%</div></div>
+                  <div class="progress-track"><i style="--value: 68%"></i></div>
+                  <div class="goal-meta"><span>Rp 12.2M terkumpul</span><span>3 bulan lagi</span></div>
+                </div>
+                <div class="goal-card">
+                  <div class="goal-head"><div><b>Emergency Fund</b><span>Target 6 bulan expense</span></div><div class="goal-ring" style="--value: 76%">76%</div></div>
+                  <div class="progress-track"><i style="--value: 76%"></i></div>
+                  <div class="goal-meta"><span>Rp 45.6M terkumpul</span><span>On track</span></div>
+                </div>
+                <div class="goal-card">
+                  <div class="goal-head"><div><b>Liburan Seoul</b><span>Target Rp 24.000.000</span></div><div class="goal-ring" style="--value: 25%">25%</div></div>
+                  <div class="progress-track"><i style="--value: 25%"></i></div>
+                  <div class="goal-meta"><span>Rp 6M terkumpul</span><span>Rp 750K/bulan</span></div>
+                </div>
+              </div>
+            </div>
+            <nav class="bottom-nav" aria-label="Main navigation">
+              <a href="dashboard.html"><span class="nav-symbol">H</span>Home</a>
+              <a href="transactions.html"><span class="nav-symbol">T</span>Kas</a>
+              <a class="active" href="goals.html"><span class="nav-symbol">G</span>Goals</a>
+              <a href="gold.html"><span class="nav-symbol">Au</span>Gold</a>
+            </nav>
+            <div class="sheet-backdrop" data-sheet="goal" aria-hidden="true">
+              <div class="bottom-sheet" role="dialog" aria-modal="true" aria-labelledby="goalSheetTitle">
+                <button class="sheet-close" type="button" data-close-sheet aria-label="Tutup">×</button>
+                <span class="sheet-handle"></span>
+                <div class="sheet-head">
+                  <span>Sinking Fund</span>
+                  <h3 id="goalSheetTitle">Create new goal</h3>
+                </div>
+                <div class="form-grid">
+                  <label class="sheet-field"><span>Nama target</span><input type="text" value="Camera baru" /></label>
+                  <label class="sheet-field"><span>Target nominal / gram</span><input type="text" value="Rp 15.000.000" /></label>
+                  <label class="sheet-field"><span>Deadline</span><input type="date" value="2026-12-31" /></label>
+                </div>
+                <div class="goal-type-row" aria-label="Tipe goal">
+                  <button class="category-chip active" type="button"><i>Rp</i>Rupiah</button>
+                  <button class="category-chip" type="button"><i>Au</i>Gold gram</button>
+                </div>
+                <button class="primary-btn" type="button" data-close-sheet>Create goal</button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>

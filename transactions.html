@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FinBestie Transactions</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="transactions">
+    <main class="stage">
+      <aside class="brand-panel" aria-label="Arah visual">
+        <div class="brand-pill"><span class="brand-dot"></span> Buku Kas</div>
+        <h1>Transactions</h1>
+        <p>Riwayat pemasukan dan pengeluaran dengan filter periode dan kategori.</p>
+      </aside>
+      <section class="phone-shell" aria-label="Mobile app preview">
+        <div class="app">
+          <section class="screen">
+            <div class="topbar main-top">
+              <div class="main-title-block">
+                <span>Buku Kas</span>
+                <h2>Transactions</h2>
+              </div>
+              <button class="round-action" type="button" data-open-sheet="transaction" aria-label="Tambah transaksi">+</button>
+            </div>
+            <div class="content main-content">
+              <div class="filter-row" aria-label="Filter periode">
+                <button class="filter-chip active">Today</button>
+                <button class="filter-chip">Weekly</button>
+                <button class="filter-chip">Monthly</button>
+                <button class="filter-chip">Food</button>
+                <button class="filter-chip">Income</button>
+              </div>
+              <div class="cashflow-card">
+                <span>Net cashflow bulan ini</span>
+                <strong>+Rp 2.150.000</strong>
+              </div>
+              <div class="tx-list">
+                <div class="tx-item"><span class="tx-icon">Fo</span><div><b>Kopi & brunch</b><span>Food · Today, 09:20</span></div><em class="tx-amount out">-Rp 86K</em></div>
+                <div class="tx-item"><span class="tx-icon">In</span><div><b>Salary</b><span>Income · May 31</span></div><em class="tx-amount in">+Rp 8M</em></div>
+                <div class="tx-item"><span class="tx-icon">Tr</span><div><b>Transport</b><span>Mobility · Yesterday</span></div><em class="tx-amount out">-Rp 42K</em></div>
+                <div class="tx-item"><span class="tx-icon">Sh</span><div><b>Flash sale</b><span>Shopping · Warning impulse</span></div><em class="tx-amount out">-Rp 320K</em></div>
+                <div class="tx-item"><span class="tx-icon">Sv</span><div><b>Emergency fund</b><span>Auto contribution</span></div><em class="tx-amount out">-Rp 500K</em></div>
+              </div>
+            </div>
+            <nav class="bottom-nav" aria-label="Main navigation">
+              <a href="dashboard.html"><span class="nav-symbol">H</span>Home</a>
+              <a class="active" href="transactions.html"><span class="nav-symbol">T</span>Kas</a>
+              <a href="goals.html"><span class="nav-symbol">G</span>Goals</a>
+              <a href="gold.html"><span class="nav-symbol">Au</span>Gold</a>
+            </nav>
+            <div class="sheet-backdrop" data-sheet="transaction" aria-hidden="true">
+              <div class="bottom-sheet" role="dialog" aria-modal="true" aria-labelledby="transactionSheetTitle">
+                <button class="sheet-close" type="button" data-close-sheet aria-label="Tutup">×</button>
+                <span class="sheet-handle"></span>
+                <div class="sheet-head">
+                  <span>Quick Entry</span>
+                  <h3 id="transactionSheetTitle">Add transaction</h3>
+                </div>
+                <div class="amount-display"><span>Amount</span><strong class="amount-value">Rp 0</strong></div>
+                <div class="category-grid" aria-label="Kategori transaksi">
+                  <button class="category-chip active" type="button"><i>Fo</i>Food</button>
+                  <button class="category-chip" type="button"><i>Tr</i>Transport</button>
+                  <button class="category-chip" type="button"><i>Sh</i>Shopping</button>
+                  <button class="category-chip" type="button"><i>In</i>Income</button>
+                </div>
+                <label class="switch-row">
+                  <span><b>Impulsive spending?</b><small>Mark this if it was unplanned.</small></span>
+                  <input type="checkbox" />
+                </label>
+                <div class="numpad" aria-label="Numpad">
+                  <button type="button" data-key="1">1</button><button type="button" data-key="2">2</button><button type="button" data-key="3">3</button>
+                  <button type="button" data-key="4">4</button><button type="button" data-key="5">5</button><button type="button" data-key="6">6</button>
+                  <button type="button" data-key="7">7</button><button type="button" data-key="8">8</button><button type="button" data-key="9">9</button>
+                  <button type="button" data-key="back">⌫</button><button type="button" data-key="0">0</button><button type="button" data-key="clear">C</button>
+                </div>
+                <button class="primary-btn" type="button" data-close-sheet>Save transaction</button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>

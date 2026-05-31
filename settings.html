@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FinBestie Settings</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="settings">
+    <main class="stage">
+      <aside class="brand-panel" aria-label="Arah visual">
+        <div class="brand-pill"><span class="brand-dot"></span> Settings</div>
+        <h1>Settings</h1>
+        <p>Mode tampilan dan notifikasi penting untuk budget serta harga emas.</p>
+      </aside>
+      <section class="phone-shell" aria-label="Mobile app preview">
+        <div class="app">
+          <section class="screen">
+            <div class="topbar main-top">
+              <a class="icon-btn" href="profile.html" aria-label="Kembali">‹</a>
+              <div class="main-title-block compact-title">
+                <span>Account</span>
+                <h2>Settings</h2>
+              </div>
+            </div>
+            <div class="content main-content">
+              <div class="settings-card">
+                <div class="settings-avatar">HB</div>
+                <div>
+                  <b>Hanna Bestie</b>
+                  <span>Google account connected</span>
+                </div>
+              </div>
+
+              <div class="settings-list">
+                <label class="settings-row">
+                  <span><b>Dark Mode</b><small>Keep the app calm for night budgeting.</small></span>
+                  <input class="settings-switch" type="checkbox" checked />
+                </label>
+                <label class="settings-row">
+                  <span><b>Gold price drop alert</b><small>Kabarin kalau Antam turun dari target.</small></span>
+                  <input class="settings-switch" type="checkbox" checked />
+                </label>
+                <label class="settings-row">
+                  <span><b>Gold price rise alert</b><small>Notifikasi kalau nilai vault kamu naik.</small></span>
+                  <input class="settings-switch" type="checkbox" />
+                </label>
+                <label class="settings-row">
+                  <span><b>Weekly insight reminder</b><small>Review spending tiap Minggu malam.</small></span>
+                  <input class="settings-switch" type="checkbox" checked />
+                </label>
+                <label class="settings-row">
+                  <span><b>Budget limit warning</b><small>Alert saat kategori hampir habis.</small></span>
+                  <input class="settings-switch" type="checkbox" checked />
+                </label>
+              </div>
+
+              <div class="coach-card quiet-card">
+                <span>Notification style</span>
+                <b>Friendly, not judgy.</b>
+                <p>Warning tetap santai, tapi cukup jelas untuk bikin user berhenti sebelum checkout impulsif.</p>
+              </div>
+            </div>
+            <nav class="bottom-nav" aria-label="Main navigation">
+              <a class="active" href="dashboard.html"><span class="nav-symbol">H</span>Home</a>
+              <a href="transactions.html"><span class="nav-symbol">T</span>Kas</a>
+              <a href="goals.html"><span class="nav-symbol">G</span>Goals</a>
+              <a href="gold.html"><span class="nav-symbol">Au</span>Gold</a>
+            </nav>
+          </section>
+        </div>
+      </section>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>
