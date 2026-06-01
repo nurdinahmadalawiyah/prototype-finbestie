@@ -18,18 +18,28 @@
           <section class="screen">
             <div class="topbar main-top">
               <div class="main-title-block">
-                <span>Today</span>
+                <span id="dashboardDateLabel">Week overview</span>
                 <h2>Hi, Hanna.</h2>
+              </div>
+              <div class="top-actions" aria-label="Shortcuts">
+                <a class="icon-btn" href="settings.html" aria-label="Settings">⚙</a>
               </div>
             </div>
             <div class="content main-content">
               <div class="home-hero-card">
-                <span>Sisa limit minggu ini</span>
-                <strong>Rp 1.280.000</strong>
+                <span>Total tabungan</span>
+                <strong id="heroSavings">Rp 6.800.000</strong>
+                <div class="progress-track hero-progress" id="heroProgress" style="--value: 20%"><i></i></div>
+                <div class="hero-meta"><span>Spent</span><b id="heroSpentPct">62%</b><span class="hero-meta-sep">·</span><b id="heroSpentTotal">Rp 0</b></div>
                 <div class="hero-card-row">
-                  <div class="hero-mini"><span>Spent</span><b>62%</b></div>
-                  <div class="hero-mini"><span>Safe until</span><b>Sunday</b></div>
+                  <div class="hero-mini"><span>Pemasukan bulan ini</span><b id="heroIncome">Rp 8.000.000</b></div>
+                  <div class="hero-mini hero-mini-gold"><span>Total emas</span><b>12.4g</b></div>
                 </div>
+              </div>
+              <div class="highlight-card">
+                <span>Highlight</span>
+                <b>Overspend di Shopping +Rp 120K</b>
+                <p>Coba turunin limit kecil dulu biar nggak kebablasan minggu depan.</p>
               </div>
               <div class="budget-snapshot">
                 <div class="section-head">
@@ -41,22 +51,53 @@
               <div class="cashflow-card">
                 <span>Cashflow 7 hari</span>
                 <strong>+Rp 420K</strong>
+                <div class="cashflow-row">
+                  <div><small>Income</small><b>Rp 8.000.000</b></div>
+                  <div><small>Expense</small><b>Rp 7.580.000</b></div>
+                </div>
                 <div class="cash-bars" aria-hidden="true">
                   <i style="height: 42px"></i><i style="height: 74px"></i><i style="height: 36px"></i><i style="height: 62px"></i><i style="height: 82px"></i><i style="height: 48px"></i><i style="height: 58px"></i>
                 </div>
               </div>
-              <a class="insight-teaser" href="insights.html">
-                <span class="insight-teaser-copy">
-                  <small>Weekly Insight</small>
-                  <b>Quick check: jajan impulsif naik 28%</b>
-                </span>
-                <span class="insight-teaser-action">See</span>
-              </a>
-              <div class="shortcut-grid">
-                <button class="shortcut-card" type="button" data-open-sheet="transaction"><i>Rp</i><b>Catat transaksi</b><span>Income atau expense cepat</span></button>
-                <a class="shortcut-card" href="goals.html"><i>G</i><b>Update goals</b><span>Tambah progress target</span></a>
-                <a class="shortcut-card" href="gold.html"><i>Au</i><b>Gold vault</b><span>Cek gram dan harga</span></a>
-                <a class="shortcut-card" href="profile.html"><i>BP</i><b>Badge room</b><span>Metode, badge, retake quiz</span></a>
+              <div class="goals-panel">
+                <div class="section-head">
+                  <b>Goals</b>
+                  <span>2 terdekat</span>
+                </div>
+                <div class="goal-list">
+                  <div class="goal-card">
+                    <div class="goal-head">
+                      <div><b>Emergency fund</b><span>Target Rp 12.000.000</span></div>
+                      <div class="goal-ring" style="--value: 62%">62%</div>
+                    </div>
+                    <div class="progress-track" style="--value: 62%"><i></i></div>
+                    <div class="goal-meta"><span>Deadline: 28 Jun</span><span>Sisa: Rp 4.560.000</span></div>
+                  </div>
+                  <div class="goal-card">
+                    <div class="goal-head">
+                      <div><b>Laptop upgrade</b><span>Target Rp 15.000.000</span></div>
+                      <div class="goal-ring" style="--value: 38%">38%</div>
+                    </div>
+                    <div class="progress-track" style="--value: 38%"><i></i></div>
+                    <div class="goal-meta"><span>Deadline: 15 Jul</span><span>Sisa: Rp 9.300.000</span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="coach-card">
+                <span>Next move</span>
+                <b>Turunkan shopping limit Rp 150K minggu depan.</b>
+                <p>Biar impulsif tetap aman, tapi lifestyle nggak harus mati gaya.</p>
+              </div>
+              <div class="recent-panel">
+                <div class="section-head">
+                  <b>Recent</b>
+                  <span>3 transaksi terakhir</span>
+                </div>
+                <div class="tx-list">
+                  <div class="tx-item"><span class="tx-icon">Fo</span><div><b>Kopi & brunch</b><span>Food · Today, 09:20</span></div><em class="tx-amount out">-Rp 86K</em></div>
+                  <div class="tx-item"><span class="tx-icon">Sh</span><div><b>Flash sale</b><span>Shopping · Yesterday</span></div><em class="tx-amount out">-Rp 320K</em></div>
+                  <div class="tx-item"><span class="tx-icon">In</span><div><b>Salary</b><span>Income · May 31</span></div><em class="tx-amount in">+Rp 8M</em></div>
+                </div>
               </div>
             </div>
             <nav class="bottom-nav" aria-label="Main navigation">

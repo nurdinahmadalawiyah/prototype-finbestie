@@ -1304,6 +1304,76 @@ button {
   text-transform: uppercase;
 }
 
+.top-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.hero-progress {
+  margin-top: 14px;
+}
+
+.highlight-card {
+  margin-top: 14px;
+  padding: 16px;
+  border-radius: var(--radius-xl);
+  background:
+    radial-gradient(circle at 86% 10%, rgba(240, 107, 97, 0.14), transparent 34%),
+    rgba(246, 242, 232, 0.06);
+  box-shadow: var(--card-shadow);
+}
+
+.highlight-card span {
+  display: block;
+  color: rgba(246, 242, 232, 0.58);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.highlight-card b {
+  display: block;
+  margin-top: 8px;
+  color: var(--paper);
+  font-size: 15px;
+}
+
+.highlight-card p {
+  margin: 10px 0 0;
+  color: rgba(246, 242, 232, 0.68);
+  font-size: 12px;
+  line-height: 1.45;
+  font-weight: 700;
+}
+
+.cashflow-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.cashflow-row small {
+  display: block;
+  color: rgba(244, 242, 231, 0.58);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.cashflow-row b {
+  display: block;
+  margin-top: 6px;
+  font-size: 14px;
+}
+
+.goals-panel,
+.recent-panel {
+  margin-top: 18px;
+}
+
 .round-action {
   display: grid;
   place-items: center;
@@ -1331,9 +1401,13 @@ button {
 .cashflow-card {
   border-radius: 28px;
   padding: 18px;
+  --hero-grad-a: #6e72f8;
+  --hero-grad-b: #6d70eb;
+  --hero-grad-c: #eb7470;
+  --hero-glow: rgba(155, 216, 229, 0.34);
   background:
-    radial-gradient(circle at 84% 12%, rgba(155, 216, 229, 0.34), transparent 32%),
-    var(--violet);
+    radial-gradient(circle at 84% 12%, color-mix(in srgb, var(--hero-glow), transparent 60%), transparent 34%),
+    linear-gradient(145deg, var(--hero-grad-a) 0%, var(--hero-grad-b) 56%, var(--hero-grad-c) 100%);
   color: var(--paper);
   box-shadow: 0 24px 48px rgba(108, 112, 246, 0.18);
 }
@@ -1360,16 +1434,52 @@ button {
 
 .hero-card-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, 1fr);
   gap: 10px;
   margin-top: 18px;
 }
 
+.hero-meta {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-top: 10px;
+  color: rgba(244, 242, 231, 0.66);
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.hero-meta b {
+  color: var(--paper);
+  font-size: 14px;
+  font-weight: 950;
+}
+
+.hero-meta-sep {
+  color: rgba(244, 242, 231, 0.4);
+  font-weight: 900;
+}
+
 .hero-mini {
-  min-height: 82px;
-  padding: 12px;
+  min-height: 74px;
+  padding: 10px;
   border-radius: 18px;
   background: rgba(244, 242, 231, 0.14);
+}
+
+.hero-mini-gold {
+  background:
+    radial-gradient(circle at 84% 18%, rgba(246, 242, 232, 0.26), transparent 34%),
+    linear-gradient(145deg, #f1cc72 0%, #e6b75e 55%, #d79a34 100%);
+  color: var(--ink);
+}
+
+.hero-mini-gold span {
+  color: rgba(21, 21, 21, 0.62);
+}
+
+.hero-mini-gold b {
+  color: var(--ink);
 }
 
 .hero-mini b,
@@ -1383,7 +1493,7 @@ button {
 
 .hero-mini b {
   margin-top: 8px;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .cashflow-card {
@@ -1605,6 +1715,14 @@ button {
 
 .gold-hero-card span {
   color: rgba(21, 21, 21, 0.62);
+}
+
+.asset-sub {
+  margin: 12px 0 0;
+  color: rgba(21, 21, 21, 0.62);
+  font-size: 12px;
+  line-height: 1.4;
+  font-weight: 800;
 }
 
 .gold-chart {
@@ -2982,6 +3100,19 @@ input:focus-visible {
   margin-top: 12px;
 }
 
+.budget-item-meter {
+  grid-template-columns: 38px minmax(0, 1fr) auto;
+}
+
+.budget-meter {
+  height: 8px;
+  margin-top: 10px;
+}
+
+.budget-item-meter span {
+  margin-top: 6px;
+}
+
 .allocation {
   gap: 10px;
 }
@@ -3022,9 +3153,13 @@ input:focus-visible {
 .home-hero-card {
   min-height: 196px;
   padding: 20px;
+  --hero-grad-a: #6e72f8;
+  --hero-grad-b: #6d70eb;
+  --hero-grad-c: #eb7470;
+  --hero-glow: #5aaaf0;
   background:
-    radial-gradient(circle at 84% 10%, rgba(155, 216, 229, 0.38), transparent 32%),
-    linear-gradient(145deg, #6d71f4, #6f72e5 56%, #eb746c);
+    radial-gradient(circle at 84% 10%, color-mix(in srgb, var(--hero-glow), transparent 62%), transparent 34%),
+    linear-gradient(145deg, var(--hero-grad-a) 0%, var(--hero-grad-b) 56%, var(--hero-grad-c) 100%);
 }
 
 .home-hero-card strong,
@@ -3036,6 +3171,21 @@ input:focus-visible {
 .hero-mini {
   border-radius: 20px;
   background: rgba(246, 242, 232, 0.14);
+}
+
+.hero-mini.hero-mini-gold {
+  background:
+    radial-gradient(circle at 84% 18%, rgba(246, 242, 232, 0.26), transparent 34%),
+    linear-gradient(145deg, #f1cc72 0%, #e6b75e 55%, #d79a34 100%);
+  color: var(--ink);
+}
+
+.hero-mini.hero-mini-gold span {
+  color: rgba(21, 21, 21, 0.62);
+}
+
+.hero-mini.hero-mini-gold b {
+  color: var(--ink);
 }
 
 .cashflow-card {

@@ -457,17 +457,82 @@ function initDashboard() {
   if (!budgetList) return;
   const state = getState();
   if (!state?.budgets?.length) return;
-  budgetList.innerHTML = state.budgets.map((item, index) => `
-    <div class="budget-item">
-      <i>${index + 1}</i>
-      <div><strong>${item.name}</strong><span>${item.hint}</span></div>
-      <em>Rp ${formatIDR(item.limit)}</em>
-    </div>
-  `).join("");
+  const methodKey = state.selectedMethod || "rule503020";
+  const heroCard = document.querySelector(".home-hero-card");
+  const heroTheme = profileCardThemes[methodKey];
+  if (heroCard && heroTheme) {
+    heroCard.style.setProperty("--hero-grad-a", heroTheme.a);
+    heroCard.style.setProperty("--hero-grad-b", heroTheme.b);
+    heroCard.style.setProperty("--hero-grad-c", heroTheme.c);
+    heroCard.style.setProperty("--hero-glow", heroTheme.glow);
+  }
+  const spendRatios = [0.62, 0.38, 0.74, 0.45, 0.28];
+  let totalLimit = 0;
+  let totalSpent = 0;
+  budgetList.innerHTML = state.budgets.slice(0, 5).map((item, index) => {
+    const ratio = spendRatios[index % spendRatios.length];
+    const spent = roundTo(item.limit * ratio, 10000);
+    const remaining = Math.max(0, item.limit - spent);
+    const pct = Math.min(100, Math.max(0, Math.round((spent / Math.max(1, item.limit)) * 100)));
+    totalLimit += item.limit;
+    totalSpent += spent;
+    return `
+      <div class="budget-item budget-item-meter" style="--value: ${pct}%">
+        <i>${index + 1}</i>
+        <div>
+          <strong>${item.name}</strong>
+          <span>Limit Rp ${formatIDR(item.limit)} · Spent Rp ${formatIDR(spent)}</span>
+          <div class="progress-track budget-meter"><i></i></div>
+        </div>
+        <em>Rp ${formatIDR(remaining)}</em>
+      </div>
+    `;
+  }).join("");
 
   const incomeLabel = document.querySelector("#dashboardMonthlyIncome");
   if (incomeLabel && typeof state.monthlyIncome === "number") {
     incomeLabel.textContent = `Rp ${formatIDR(state.monthlyIncome)}`;
+  }
+
+  const dateLabel = document.querySelector("#dashboardDateLabel");
+  if (dateLabel) {
+    const now = new Date();
+    dateLabel.textContent = now.toLocaleDateString("id-ID", { weekday: "long", day: "numeric", month: "short" });
+  }
+
+  const totalRemaining = Math.max(0, totalLimit - totalSpent);
+  const spentPct = totalLimit ? Math.round((totalSpent / totalLimit) * 100) : 0;
+
+  const heroRemaining = document.querySelector("#heroRemaining");
+  if (heroRemaining) heroRemaining.textContent = `Rp ${formatIDR(totalRemaining)}`;
+
+  const heroSpentPct = document.querySelector("#heroSpentPct");
+  if (heroSpentPct) heroSpentPct.textContent = `${Math.min(100, Math.max(0, spentPct))}%`;
+
+  const heroSpentTotal = document.querySelector("#heroSpentTotal");
+  if (heroSpentTotal) heroSpentTotal.textContent = `Rp ${formatIDR(totalSpent)}`;
+
+  const heroProgress = document.querySelector("#heroProgress");
+  if (heroProgress) heroProgress.style.setProperty("--value", `${Math.min(100, Math.max(0, spentPct))}%`);
+
+  const heroSavings = document.querySelector("#heroSavings");
+  if (heroSavings && typeof state.monthlyIncome === "number") {
+    const savingsRates = {
+      kakeibo: 0.15,
+      rule503020: 0.2,
+      zero: 0.2,
+      sinking: 0.25,
+      fire: 0.35,
+    };
+    const rate = savingsRates[methodKey] ?? 0.2;
+    const monthlySavings = roundTo(state.monthlyIncome * rate, 50000);
+    const totalSavings = roundTo(monthlySavings * 4, 50000);
+    heroSavings.textContent = `Rp ${formatIDR(totalSavings)}`;
+  }
+
+  const heroIncome = document.querySelector("#heroIncome");
+  if (heroIncome && typeof state.monthlyIncome === "number") {
+    heroIncome.textContent = `Rp ${formatIDR(state.monthlyIncome)}`;
   }
 }
 
