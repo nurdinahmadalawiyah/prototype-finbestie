@@ -17,6 +17,10 @@
   box-sizing: border-box;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
@@ -2267,9 +2271,53 @@ button {
 
 .section-head {
   display: flex;
-  align-items: end;
+  align-items: center;
   justify-content: space-between;
   gap: 12px;
+}
+
+.section-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.detail-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  padding: 0 12px 0 14px;
+  border-radius: 999px;
+  background: rgba(246, 242, 232, 0.1);
+  color: rgba(246, 242, 232, 0.9);
+  text-decoration: none;
+  border: 0;
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  box-shadow: inset 0 0 0 1px rgba(246, 242, 232, 0.18);
+  cursor: pointer;
+}
+
+.detail-pill svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+.detail-pill:active {
+  transform: translateY(1px);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .detail-pill:hover {
+    background: rgba(246, 242, 232, 0.14);
+    box-shadow:
+      inset 0 0 0 1px rgba(246, 242, 232, 0.22),
+      0 12px 24px rgba(0, 0, 0, 0.22);
+  }
 }
 
 .section-head span,
@@ -2423,6 +2471,76 @@ button {
 .method-summary b {
   color: var(--ink);
   font-size: 22px;
+}
+
+.income-summary {
+  background:
+    radial-gradient(circle at 86% 10%, rgba(155, 216, 229, 0.14), transparent 34%),
+    rgba(246, 242, 232, 0.07);
+  color: var(--paper);
+}
+
+.income-summary span,
+.income-summary p {
+  color: rgba(246, 242, 232, 0.62);
+}
+
+.income-summary b {
+  color: var(--paper);
+}
+
+.income-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.mini-icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(246, 242, 232, 0.12);
+  color: rgba(246, 242, 232, 0.86);
+  cursor: pointer;
+}
+
+.mini-icon svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.income-edit {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.inline-income-input {
+  width: 100%;
+  border: 0;
+  border-radius: 14px;
+  padding: 10px 12px;
+  background: rgba(246, 242, 232, 0.12);
+  color: var(--paper);
+  font: inherit;
+  font-size: 16px;
+  font-weight: 950;
+  outline: none;
+}
+
+.inline-income-input::placeholder {
+  color: rgba(246, 242, 232, 0.44);
+}
+
+.income-save {
+  min-height: 40px;
 }
 
 .rule-card {
@@ -2761,6 +2879,20 @@ input:focus-visible {
 .topbar {
   min-height: 76px;
   padding: 32px 22px 10px;
+}
+
+.budget-topbar {
+  justify-content: flex-start;
+}
+
+.budget-topbar .main-title-block {
+  margin-left: 56px;
+  text-align: left;
+}
+
+.budget-back {
+  position: absolute;
+  left: 22px;
 }
 
 .auth-topbar {
@@ -3154,6 +3286,34 @@ input:focus-visible {
   margin-top: 12px;
 }
 
+.budget-totals-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 14px;
+  border-radius: var(--radius-xl);
+  background: rgba(246, 242, 232, 0.06);
+  box-shadow: var(--card-shadow);
+}
+
+.budget-totals-card span {
+  display: block;
+  color: rgba(246, 242, 232, 0.56);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.budget-totals-card b {
+  display: block;
+  margin-top: 8px;
+  color: var(--paper);
+  font-size: 16px;
+  font-weight: 950;
+}
+
 .budget-item-meter {
   grid-template-columns: 38px minmax(0, 1fr) auto;
 }
@@ -3166,6 +3326,7 @@ input:focus-visible {
 .budget-item-meter span {
   margin-top: 6px;
 }
+
 
 .allocation {
   gap: 10px;

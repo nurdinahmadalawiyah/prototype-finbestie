@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FinPlanner Budget</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="budget">
+    <main class="stage">
+      <aside class="brand-panel" aria-label="Arah visual">
+        <div class="brand-pill"><span class="brand-dot"></span> Budget</div>
+        <h1>Budget</h1>
+        <p>Detail kategori budget, limit, dan spent (dummy) biar kebaca jelas.</p>
+      </aside>
+      <section class="phone-shell" aria-label="Mobile app preview">
+        <div class="app">
+          <section class="screen">
+            <div class="topbar main-top budget-topbar">
+              <a class="icon-btn budget-back" href="dashboard.html" aria-label="Kembali">&#8249;</a>
+              <div class="main-title-block">
+                <span>Budget</span>
+                <h2>Budget</h2>
+              </div>
+            </div>
+            <div class="content main-content">
+              <div class="method-summary income-summary">
+                <div class="income-head">
+                  <span>Monthly income</span>
+                  <button class="mini-icon" type="button" id="editMonthlyIncome" aria-label="Edit monthly income">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                      <path fill="currentColor" d="M3.8 17.6V20.2h2.6l10-10-2.6-2.6-10 10zm16.1-9.4a.7.7 0 0 0 0-1l-2.1-2.1a.7.7 0 0 0-1 0l-1.6 1.6 3.1 3.1 1.6-1.6z"/>
+                    </svg>
+                  </button>
+                </div>
+                <b id="budgetMonthlyIncome">Rp 0</b>
+                <div class="income-edit" id="budgetIncomeEdit" hidden>
+                  <span class="income-prefix" aria-hidden="true">Rp</span>
+                  <input class="inline-income-input" id="budgetMonthlyIncomeInput" type="text" inputmode="numeric" autocomplete="off" placeholder="0" aria-label="Nominal income bulanan" />
+                  <button class="ghost-btn income-save" type="button" id="saveMonthlyIncome">Simpan</button>
+                </div>
+                <p id="budgetMethodSummary">Template budget mengikuti metode pilihan kamu.</p>
+              </div>
+              <div class="budget-totals-card" aria-label="Ringkasan spent dan limit">
+                <div><span>Spent</span><b id="budgetTotalsSpent">Rp 0</b></div>
+                <div><span>Limit</span><b id="budgetTotalsLimit">Rp 0</b></div>
+              </div>
+              <div class="budget-snapshot">
+                <div class="section-head">
+                  <b>Kategori</b>
+                  <button class="icon-btn" type="button" id="addBudgetCategory" aria-label="Tambah kategori budget">+</button>
+                </div>
+                <div class="budget-list" id="budgetPageList"></div>
+              </div>
+            </div>
+            <nav class="bottom-nav" aria-label="Main navigation">
+              <a href="dashboard.html"><span class="nav-symbol" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 3.2 3 10.3v10.3h6.4v-6.4h5.2v6.4H21V10.3L12 3.2zm7.2 16H16v-6.4H8v6.4H4.8v-8.1L12 5.5l7.2 5.6v8.1z"/></svg></span>Home</a>
+              <a href="accounts.html"><span class="nav-symbol" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M3.5 7.5A3 3 0 0 1 6.5 4.5h11A2.5 2.5 0 0 1 20 7v1h-7a3 3 0 0 0 0 6h7v1a2.5 2.5 0 0 1-2.5 2.5h-11a3 3 0 0 1-3-3v-9zM20 12h-7a1.5 1.5 0 0 1 0-3h7v3zm-2.2-1.5a.8.8 0 1 0 0 1.6.8.8 0 0 0 0-1.6z"/></svg></span>Saldo</a>
+              <button class="nav-add" type="button" data-nav-add data-sheet-target="transaction" aria-label="Tambah"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M11 5h2v14h-2z"/><path fill="currentColor" d="M5 11h14v2H5z"/></svg></button>
+              <a href="insights.html"><span class="nav-symbol" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 19.5V4.5h1.8v15h15v1.8H4.5zm3-2.7v-6h2.4v6H7.5zm4.8 0v-9h2.4v9h-2.4zm4.8 0v-4.5h2.4v4.5h-2.4z"/></svg></span>Statistik</a>
+              <a href="profile.html"><span class="nav-symbol" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 12.2a4.2 4.2 0 1 0-4.2-4.2 4.2 4.2 0 0 0 4.2 4.2zm0-6.6a2.4 2.4 0 1 1-2.4 2.4A2.4 2.4 0 0 1 12 5.6z"/><path fill="currentColor" d="M4.8 20.2a7.2 7.2 0 0 1 14.4 0h-1.8a5.4 5.4 0 0 0-10.8 0H4.8z"/></svg></span>Profile</a>
+            </nav>
+          </section>
+        </div>
+      </section>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>

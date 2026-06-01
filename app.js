@@ -498,10 +498,7 @@ function initDashboard() {
     `;
   }).join("");
 
-  const incomeLabel = document.querySelector("#dashboardMonthlyIncome");
-  if (incomeLabel && typeof state.monthlyIncome === "number") {
-    incomeLabel.textContent = `Rp ${formatIDR(state.monthlyIncome)}`;
-  }
+  // Monthly income label removed from dashboard budget header.
 
   const dateLabel = document.querySelector("#dashboardDateLabel");
   if (dateLabel) {
@@ -699,6 +696,101 @@ function initNavAdd() {
   });
 }
 
+function initBudgetPage() {
+  const state = getState();
+  const methodKey = state.selectedMethod || "rule503020";
+  const method = methods[methodKey];
+  let budgets = Array.isArray(state.budgets) ? state.budgets : [];
+
+  const monthlyIncome = typeof state.monthlyIncome === "number" ? state.monthlyIncome : 0;
+  const incomeEl = document.querySelector("#budgetMonthlyIncome");
+  if (incomeEl) incomeEl.textContent = `Rp ${formatIDR(monthlyIncome)}`;
+
+  const summaryEl = document.querySelector("#budgetMethodSummary");
+  if (summaryEl) summaryEl.textContent = `Metode kamu: ${method?.method || "—"}. Kamu bisa edit kategori & limit kapan aja.`;
+
+  const listEl = document.querySelector("#budgetPageList");
+  if (!listEl) return;
+
+  const editButton = document.querySelector("#editMonthlyIncome");
+  const saveButton = document.querySelector("#saveMonthlyIncome");
+  const editRow = document.querySelector("#budgetIncomeEdit");
+  const inputEl = document.querySelector("#budgetMonthlyIncomeInput");
+
+  function renderList() {
+    const spendRatios = [0.62, 0.38, 0.74, 0.45, 0.28];
+    let totalLimit = 0;
+    let totalSpent = 0;
+
+    listEl.innerHTML = budgets.map((item, index) => {
+      const ratio = spendRatios[index % spendRatios.length];
+      const spent = roundTo(item.limit * ratio, 10000);
+      const remaining = Math.max(0, item.limit - spent);
+      const pct = Math.min(100, Math.max(0, Math.round((spent / Math.max(1, item.limit)) * 100)));
+      totalLimit += item.limit;
+      totalSpent += spent;
+      return `
+        <div class="budget-item budget-item-meter" style="--value: ${pct}%">
+          <i>${index + 1}</i>
+          <div>
+            <strong>${item.name}</strong>
+            <span>Limit Rp ${formatIDR(item.limit)} · Spent Rp ${formatIDR(spent)}</span>
+            <div class="progress-track budget-meter"><i></i></div>
+          </div>
+          <em>Rp ${formatIDR(remaining)}</em>
+        </div>
+      `;
+    }).join("");
+
+    const totalsSpentEl = document.querySelector("#budgetTotalsSpent");
+    if (totalsSpentEl) totalsSpentEl.textContent = `Rp ${formatIDR(totalSpent)}`;
+    const totalsLimitEl = document.querySelector("#budgetTotalsLimit");
+    if (totalsLimitEl) totalsLimitEl.textContent = `Rp ${formatIDR(totalLimit)}`;
+  }
+
+  function setEditing(enabled) {
+    if (!editRow || !inputEl || !incomeEl) return;
+    editRow.hidden = !enabled;
+    incomeEl.hidden = enabled;
+    if (enabled) {
+      const currentIncome = Number(getState().monthlyIncome || 0);
+      inputEl.value = currentIncome ? formatIDR(currentIncome) : "";
+      inputEl.focus();
+    }
+  }
+
+  function saveIncome() {
+    if (!inputEl || !incomeEl || !editRow) return;
+    const nextIncome = parseIDRString(inputEl.value);
+    if (!nextIncome) return;
+    budgets = generateInitialBudgets(methodKey, nextIncome);
+    setState({ monthlyIncome: nextIncome, budgets });
+    incomeEl.textContent = `Rp ${formatIDR(nextIncome)}`;
+    setEditing(false);
+    renderList();
+  }
+
+  if (editButton && editRow && inputEl) {
+    editButton.addEventListener("click", () => setEditing(true));
+  }
+  if (saveButton) saveButton.addEventListener("click", saveIncome);
+  if (inputEl) {
+    inputEl.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") saveIncome();
+      if (event.key === "Escape") setEditing(false);
+    });
+  }
+
+  const addButton = document.querySelector("#addBudgetCategory");
+  if (addButton) {
+    addButton.addEventListener("click", () => {
+      alert("Coming soon: tambah & edit kategori budget.");
+    });
+  }
+
+  renderList();
+}
+
 const page = document.body.dataset.page;
 applyTheme();
 if (page === "onboarding") initOnboarding();
@@ -708,6 +800,7 @@ if (page === "result") initResult();
 if (page === "budget-preview") initBudgetPreview();
 if (page === "dashboard") initDashboard();
 if (page === "accounts") initAccounts();
+if (page === "budget") initBudgetPage();
 if (page === "profile") initProfile();
 if (page === "settings") initSettings();
 initRetakeLinks();
