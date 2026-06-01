@@ -466,6 +466,15 @@ function initDashboard() {
     heroCard.style.setProperty("--hero-grad-c", heroTheme.c);
     heroCard.style.setProperty("--hero-glow", heroTheme.glow);
   }
+
+  const accounts = Array.isArray(state.accounts) && state.accounts.length ? state.accounts : [
+    { id: "bank", name: "Tabungan", provider: "Bank", balance: 12450000 },
+    { id: "gopay", name: "GoPay", provider: "E-wallet", balance: 350000 },
+    { id: "cash", name: "Cash", provider: "Dompet", balance: 120000 },
+  ];
+  if (!state.accounts) setState({ accounts });
+  const accountsSum = accounts.reduce((sum, acc) => sum + (Number(acc.balance) || 0), 0);
+
   const spendRatios = [0.62, 0.38, 0.74, 0.45, 0.28];
   let totalLimit = 0;
   let totalSpent = 0;
@@ -516,23 +525,38 @@ function initDashboard() {
   if (heroProgress) heroProgress.style.setProperty("--value", `${Math.min(100, Math.max(0, spentPct))}%`);
 
   const heroSavings = document.querySelector("#heroSavings");
-  if (heroSavings && typeof state.monthlyIncome === "number") {
-    const savingsRates = {
-      kakeibo: 0.15,
-      rule503020: 0.2,
-      zero: 0.2,
-      sinking: 0.25,
-      fire: 0.35,
-    };
-    const rate = savingsRates[methodKey] ?? 0.2;
-    const monthlySavings = roundTo(state.monthlyIncome * rate, 50000);
-    const totalSavings = roundTo(monthlySavings * 4, 50000);
-    heroSavings.textContent = `Rp ${formatIDR(totalSavings)}`;
-  }
+  if (heroSavings) heroSavings.textContent = `Rp ${formatIDR(accountsSum)}`;
 
   const heroIncome = document.querySelector("#heroIncome");
   if (heroIncome && typeof state.monthlyIncome === "number") {
     heroIncome.textContent = `Rp ${formatIDR(state.monthlyIncome)}`;
+  }
+}
+
+function initAccounts() {
+  const state = getState();
+  const accounts = Array.isArray(state.accounts) && state.accounts.length ? state.accounts : [
+    { id: "bank", name: "Tabungan", provider: "Bank", balance: 12450000 },
+    { id: "gopay", name: "GoPay", provider: "E-wallet", balance: 350000 },
+    { id: "cash", name: "Cash", provider: "Dompet", balance: 120000 },
+  ];
+  if (!state.accounts) setState({ accounts });
+
+  const accountsGrid = document.querySelector("#accountsGrid");
+  const accountsTotal = document.querySelector("#accountsTotal");
+  if (accountsGrid) {
+    const icons = { bank: "🏦", gopay: "💳", cash: "💵" };
+    accountsGrid.innerHTML = accounts.map((acc) => `
+      <div class="account-row">
+        <div class="account-icon" aria-hidden="true">${icons[acc.id] || "💰"}</div>
+        <div class="account-main"><b>${acc.name}</b><span>${acc.provider}</span></div>
+        <div class="account-balance">Rp ${formatIDR(acc.balance)}</div>
+      </div>
+    `).join("");
+  }
+  if (accountsTotal) {
+    const total = accounts.reduce((sum, acc) => sum + (Number(acc.balance) || 0), 0);
+    accountsTotal.textContent = `Rp ${formatIDR(total)}`;
   }
 }
 
@@ -683,6 +707,7 @@ if (page === "quiz") initQuiz();
 if (page === "result") initResult();
 if (page === "budget-preview") initBudgetPreview();
 if (page === "dashboard") initDashboard();
+if (page === "accounts") initAccounts();
 if (page === "profile") initProfile();
 if (page === "settings") initSettings();
 initRetakeLinks();

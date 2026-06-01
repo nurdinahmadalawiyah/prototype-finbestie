@@ -1374,6 +1374,60 @@ button {
   margin-top: 18px;
 }
 
+.accounts-panel {
+  margin-top: 18px;
+}
+
+.accounts-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.account-row {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  min-height: 72px;
+  padding: 14px;
+  border-radius: var(--radius-xl);
+  background: rgba(246, 242, 232, 0.07);
+  box-shadow: var(--card-shadow);
+}
+
+.account-icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(246, 242, 232, 0.1);
+  color: var(--paper);
+  font-size: 18px;
+  font-weight: 1000;
+}
+
+.account-main b {
+  display: block;
+  color: var(--paper);
+  font-size: 14px;
+}
+
+.account-main span {
+  display: block;
+  margin-top: 4px;
+  color: rgba(246, 242, 232, 0.54);
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.account-balance {
+  color: var(--paper);
+  font-size: 12px;
+  font-weight: 950;
+}
+
 .round-action {
   display: grid;
   place-items: center;
