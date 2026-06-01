@@ -535,6 +535,17 @@ function initSheets() {
     });
   }
 
+  const pendingSheet = sessionStorage.getItem("openSheet");
+  if (pendingSheet) {
+    const sheet = document.querySelector(`[data-sheet="${pendingSheet}"]`);
+    if (sheet) {
+      closeSheets();
+      sheet.classList.add("open");
+      sheet.setAttribute("aria-hidden", "false");
+    }
+    sessionStorage.removeItem("openSheet");
+  }
+
   openButtons.forEach((button) => {
     button.addEventListener("click", (event) => {
       event.preventDefault();
@@ -582,6 +593,23 @@ function initSheets() {
   });
 }
 
+function initNavAdd() {
+  document.querySelectorAll("[data-nav-add]").forEach((button) => {
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      const target = button.dataset.sheetTarget || "transaction";
+      const localSheet = document.querySelector(`[data-sheet="${target}"]`);
+      if (localSheet) {
+        localSheet.classList.add("open");
+        localSheet.setAttribute("aria-hidden", "false");
+        return;
+      }
+      sessionStorage.setItem("openSheet", target);
+      location.href = "dashboard.html";
+    });
+  });
+}
+
 const page = document.body.dataset.page;
 applyTheme();
 if (page === "onboarding") initOnboarding();
@@ -595,3 +623,4 @@ if (page === "settings") initSettings();
 initRetakeLinks();
 initFilterChips();
 initSheets();
+initNavAdd();
