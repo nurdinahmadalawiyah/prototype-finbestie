@@ -353,6 +353,12 @@ function initResult() {
     selectedMethod = button.dataset.method;
     setState({ selectedMethod });
     renderResult(selectedMethod);
+
+    const backdrop = document.querySelector("[data-sheet='method']");
+    if (backdrop) {
+      backdrop.classList.remove("open");
+      backdrop.setAttribute("aria-hidden", "true");
+    }
   });
   document.querySelector("#previewBudget").addEventListener("click", () => {
     setState({ selectedMethod });
@@ -365,9 +371,13 @@ function initResult() {
 }
 
 function initBudgetPreview() {
-  const methodKey = getState().selectedMethod || "rule503020";
-  const data = methods[methodKey];
-  document.querySelector("#budgetIntro").textContent = `Biar auto-budget kamu pas, masukin dulu income bulanan. Metode kamu: ${data.method}.`;
+  let methodKey = getState().selectedMethod || "rule503020";
+  function updateIntro() {
+    const data = methods[methodKey];
+    const intro = document.querySelector("#budgetIntro");
+    if (intro) intro.textContent = `Biar auto-budget kamu pas, masukin dulu income bulanan. Metode kamu: ${data.method}.`;
+  }
+  updateIntro();
 
   const incomeInput = document.querySelector("#monthlyIncome");
   const continueButton = document.querySelector("#budgetContinue");

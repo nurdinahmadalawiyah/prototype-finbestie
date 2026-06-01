@@ -28,9 +28,24 @@
                 <p class="method-name" id="resultMethod"></p>
               </div>
               <p class="lede" id="resultCopy"></p>
+              <div class="reveal-helper" aria-label="Ganti metode budgeting">
+                <span>Kurang cocok?</span>
+                <button class="text-btn" type="button" data-open-sheet="method">Ganti metode</button>
+              </div>
+            </div>
+            <div class="bottom-dock">
               <button class="primary-btn" type="button" id="previewBudget">Preview auto-budget -></button>
-              <p class="manual-choice-note">Kalau profile ini kurang cocok, kamu bisa pilih metode budgeting lain secara manual di bawah.</p>
-              <div class="method-grid" id="methodGrid" aria-label="Pilih profile lain"></div>
+            </div>
+            <div class="sheet-backdrop" data-sheet="method" aria-hidden="true">
+              <div class="bottom-sheet" role="dialog" aria-modal="true" aria-labelledby="methodSheetTitle">
+                <button class="sheet-close" type="button" data-close-sheet aria-label="Tutup">&times;</button>
+                <span class="sheet-handle"></span>
+                <div class="sheet-head">
+                  <span>Recommendation</span>
+                  <h3 id="methodSheetTitle">Pilih metode</h3>
+                </div>
+                <div class="method-grid" id="methodGrid" aria-label="Pilih metode budgeting"></div>
+              </div>
             </div>
           </section>
         </div>

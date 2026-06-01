@@ -698,6 +698,8 @@ button {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  align-items: center;
+  text-align: center;
   position: relative;
   overflow: hidden;
   padding: 22px 20px 20px;
@@ -725,8 +727,41 @@ button {
   margin-top: 18px;
 }
 
-.reveal-content > .primary-btn {
-  margin-top: 26px;
+.reveal-helper {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+  color: rgba(246, 242, 232, 0.58);
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.text-btn {
+  border: 0;
+  background: transparent;
+  color: rgba(155, 216, 229, 0.92);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  padding: 8px 10px;
+  margin: -8px -10px;
+  border-radius: 999px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
+}
+
+.text-btn:active {
+  transform: translateY(1px);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .text-btn:hover {
+    background: rgba(155, 216, 229, 0.1);
+  }
 }
 
 .method-name {
@@ -859,7 +894,7 @@ button {
 }
 
 .manual-choice-note {
-  margin: 16px 0 0;
+  margin: 10px 0 0;
   color: rgba(244, 242, 231, 0.52);
   font-size: 12px;
   line-height: 1.4;
@@ -2782,6 +2817,11 @@ input:focus-visible {
 .result-card {
   min-height: 344px;
   padding: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  text-align: center;
   border-radius: 32px;
   background:
     radial-gradient(circle at 84% 8%, rgba(155, 216, 229, 0.42), transparent 30%),
