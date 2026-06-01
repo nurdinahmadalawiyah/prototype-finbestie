@@ -1094,6 +1094,78 @@ button {
   line-height: 1;
 }
 
+.income-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.income-sub {
+  margin: 10px 0 14px;
+  color: rgba(244, 242, 231, 0.72);
+  font-size: 13px;
+  line-height: 1.45;
+  font-weight: 700;
+}
+
+.income-prefix {
+  font-size: 20px;
+  font-weight: 950;
+  letter-spacing: 0.02em;
+}
+
+.income-input {
+  width: 100%;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--paper);
+  font: inherit;
+  font-size: 34px;
+  line-height: 1;
+  font-weight: 950;
+  letter-spacing: -0.02em;
+  outline: none;
+}
+
+.income-input::placeholder {
+  color: rgba(244, 242, 231, 0.44);
+}
+
+.income-help {
+  display: block;
+  margin-top: 10px;
+  color: rgba(244, 242, 231, 0.66);
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.income-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.preset-chip {
+  border: 0;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(246, 242, 232, 0.14);
+  color: rgba(246, 242, 232, 0.88);
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow: inset 0 0 0 1px rgba(246, 242, 232, 0.18);
+}
+
+.preset-chip:active {
+  transform: translateY(1px);
+}
+
 .budget-list {
   display: grid;
   gap: 10px;
@@ -2758,6 +2830,22 @@ input:focus-visible {
   padding-bottom: 116px;
 }
 
+.budget-switch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-height: 40px;
+  padding: 0 16px;
+  margin: 16px 0 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .budget-switch:hover {
+    filter: brightness(1.06);
+  }
+}
+
 .budget-income-card,
 .home-hero-card,
 .gold-hero-card,
@@ -2770,6 +2858,14 @@ input:focus-visible {
 
 .budget-income-card {
   margin-top: 24px;
+}
+
+.budget-snapshot {
+  margin-top: 18px;
+}
+
+.budget-snapshot .budget-list {
+  margin-top: 12px;
 }
 
 .allocation {

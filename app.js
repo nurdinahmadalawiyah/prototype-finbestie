@@ -70,6 +70,51 @@ const profileRules = {
   },
 };
 
+function formatIDR(value) {
+  const number = Number(value || 0);
+  if (!Number.isFinite(number)) return "0";
+  return number.toLocaleString("id-ID");
+}
+
+function parseIDRString(value) {
+  const digits = String(value || "").replace(/[^\d]/g, "");
+  const parsed = Number(digits || 0);
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function roundTo(value, step) {
+  const number = Number(value || 0);
+  if (!Number.isFinite(number) || !step) return 0;
+  return Math.round(number / step) * step;
+}
+
+function generateInitialBudgets(methodKey, monthlyIncome) {
+  const templates = budgetTemplates[methodKey] || budgetTemplates.rule503020;
+  const parsedTemplates = templates.map(([name, hint, limit]) => ({
+    name,
+    hint,
+    baseLimit: parseIDRString(limit),
+  }));
+
+  const baseTotal = parsedTemplates.reduce((sum, item) => sum + item.baseLimit, 0) || 1;
+  const scale = monthlyIncome / baseTotal;
+  const rounded = parsedTemplates.map((item) => ({
+    name: item.name,
+    hint: item.hint,
+    limit: roundTo(item.baseLimit * scale, 50000),
+  }));
+
+  const roundedTotal = rounded.reduce((sum, item) => sum + item.limit, 0);
+  const delta = monthlyIncome - roundedTotal;
+  if (rounded.length) rounded[rounded.length - 1].limit += delta;
+
+  return rounded.map((item) => ({
+    name: item.name,
+    hint: item.hint,
+    limit: Math.max(0, item.limit),
+  }));
+}
+
 const intros = [
   {
     art: "cashflow",
@@ -322,15 +367,73 @@ function initResult() {
 function initBudgetPreview() {
   const methodKey = getState().selectedMethod || "rule503020";
   const data = methods[methodKey];
-  document.querySelector("#budgetIntro").textContent = `Template awal dibuat otomatis untuk ${data.method}. Kamu masih bisa ubah semua limit setelah masuk dashboard.`;
-  document.querySelector("#allocation").innerHTML = renderAllocation(methodKey);
-  document.querySelector("#budgetList").innerHTML = budgetTemplates[methodKey].map(([name, hint, limit], index) => `
+  document.querySelector("#budgetIntro").textContent = `Biar auto-budget kamu pas, masukin dulu income bulanan. Metode kamu: ${data.method}.`;
+
+  const incomeInput = document.querySelector("#monthlyIncome");
+  const continueButton = document.querySelector("#budgetContinue");
+  if (!incomeInput || !continueButton) return;
+
+  function parseIncome(raw) {
+    const digits = String(raw || "").replace(/[^\d]/g, "");
+    const parsed = Number(digits || 0);
+    return Number.isFinite(parsed) ? parsed : 0;
+  }
+
+  function setIncome(value) {
+    const parsed = parseIncome(value);
+    continueButton.disabled = parsed <= 0;
+    incomeInput.value = parsed ? formatIDR(parsed) : "";
+    return parsed;
+  }
+
+  const existingIncome = getState().monthlyIncome;
+  if (typeof existingIncome === "number" && Number.isFinite(existingIncome) && existingIncome > 0) {
+    setIncome(existingIncome);
+  }
+
+  incomeInput.addEventListener("input", () => {
+    setIncome(incomeInput.value);
+  });
+
+  incomeInput.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter") return;
+    if (continueButton.disabled) return;
+    continueButton.click();
+  });
+
+  document.querySelectorAll("[data-income]").forEach((button) => {
+    button.addEventListener("click", () => {
+      setIncome(button.dataset.income);
+      incomeInput.focus();
+    });
+  });
+
+  continueButton.addEventListener("click", () => {
+    const parsed = parseIncome(incomeInput.value);
+    if (!parsed) return;
+    const budgets = generateInitialBudgets(methodKey, parsed);
+    setState({ selectedMethod: methodKey, monthlyIncome: parsed, budgets });
+    location.href = "dashboard.html";
+  });
+}
+
+function initDashboard() {
+  const budgetList = document.querySelector("#dashboardBudgetList");
+  if (!budgetList) return;
+  const state = getState();
+  if (!state?.budgets?.length) return;
+  budgetList.innerHTML = state.budgets.map((item, index) => `
     <div class="budget-item">
       <i>${index + 1}</i>
-      <div><strong>${name}</strong><span>${hint}</span></div>
-      <em>${limit}</em>
+      <div><strong>${item.name}</strong><span>${item.hint}</span></div>
+      <em>Rp ${formatIDR(item.limit)}</em>
     </div>
   `).join("");
+
+  const incomeLabel = document.querySelector("#dashboardMonthlyIncome");
+  if (incomeLabel && typeof state.monthlyIncome === "number") {
+    incomeLabel.textContent = `Rp ${formatIDR(state.monthlyIncome)}`;
+  }
 }
 
 function initProfile() {
@@ -450,6 +553,7 @@ if (page === "auth") initAuth();
 if (page === "quiz") initQuiz();
 if (page === "result") initResult();
 if (page === "budget-preview") initBudgetPreview();
+if (page === "dashboard") initDashboard();
 if (page === "profile") initProfile();
 if (page === "settings") initSettings();
 initRetakeLinks();

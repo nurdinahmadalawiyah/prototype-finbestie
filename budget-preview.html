@@ -18,21 +18,38 @@
           <section class="screen">
             <div class="topbar">
               <a class="icon-btn" href="result.html" aria-label="Kembali">&#8249;</a>
-              <a class="skip-btn" href="quiz.html">Ulangi</a>
+              <span aria-hidden="true"></span>
             </div>
             <div class="content budget-content">
               <span class="quiz-count">Auto-Budget Setup</span>
-              <h2 class="quiz-title">No blank state hell.</h2>
+              <h2 class="quiz-title">Masukin income bulanan.</h2>
               <p class="lede" id="budgetIntro"></p>
-              <div class="budget-income-card">
-                <span>Monthly income sample</span>
-                <strong>Rp 8.000.000</strong>
+              <div class="budget-income-card" aria-label="Monthly income">
+                <span>Monthly income</span>
+                <p class="income-sub">Pakai income bersih per bulan biar auto-budget kamu lebih pas.</p>
+                <div class="income-row">
+                  <span class="income-prefix" aria-hidden="true">Rp</span>
+                  <input
+                    class="income-input"
+                    id="monthlyIncome"
+                    type="text"
+                    inputmode="numeric"
+                    autocomplete="off"
+                    placeholder="0"
+                    aria-label="Nominal income bulanan"
+                  />
+                </div>
+                <div class="income-presets" aria-label="Preset income">
+                  <button class="preset-chip" type="button" data-income="5000000">5 jt</button>
+                  <button class="preset-chip" type="button" data-income="8000000">8 jt</button>
+                  <button class="preset-chip" type="button" data-income="12000000">12 jt</button>
+                </div>
+                <small class="income-help">Bisa kamu ubah kapan aja setelah masuk dashboard.</small>
               </div>
-              <div class="allocation" id="allocation"></div>
-              <div class="budget-list" id="budgetList"></div>
+              <a class="ghost-btn budget-switch" href="result.html">Ganti metode</a>
             </div>
             <div class="bottom-dock">
-              <a class="primary-btn" href="dashboard.html">Looks Good, Let's Go!</a>
+              <button class="primary-btn" id="budgetContinue" type="button" disabled>Lanjut ke dashboard</button>
             </div>
           </section>
         </div>
