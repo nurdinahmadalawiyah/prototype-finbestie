@@ -704,9 +704,13 @@ button {
   overflow: hidden;
   padding: 22px 20px 20px;
   border-radius: 26px;
+  --result-grad-a: #6e72f8;
+  --result-grad-b: #6d70eb;
+  --result-grad-c: #eb7470;
+  --result-glow: rgba(155, 216, 229, 0.42);
   background:
-    radial-gradient(circle at 86% 6%, rgba(155, 216, 229, 0.42), transparent 30%),
-    var(--violet);
+    radial-gradient(circle at 84% 8%, color-mix(in srgb, var(--result-glow), transparent 58%), transparent 34%),
+    linear-gradient(145deg, var(--result-grad-a) 0%, var(--result-grad-b) 54%, var(--result-grad-c) 100%);
   box-shadow: 0 24px 48px rgba(108, 112, 246, 0.18);
 }
 
@@ -780,10 +784,20 @@ button {
   place-items: center;
   width: 142px;
   height: 142px;
-  border-radius: 50%;
-  background: var(--paper);
-  color: var(--ink);
-  box-shadow: 0 22px 48px rgba(0, 0, 0, 0.18);
+  background: transparent;
+  box-shadow: none;
+}
+
+.profile-medal .badge-svg {
+  width: 82%;
+  height: 82%;
+  display: block;
+}
+
+.method-logo .badge-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 .profile-medal span,
@@ -795,6 +809,16 @@ button {
   content: "";
   position: absolute;
   display: block;
+}
+
+.profile-medal::before,
+.profile-medal::after,
+.method-logo::before,
+.method-logo::after,
+.method-logo i,
+.profile-medal span {
+  content: none;
+  display: none;
 }
 
 .profile-medal[data-logo="balance"] span {
@@ -964,14 +988,15 @@ button {
   place-items: center;
   width: 46px;
   height: 46px;
-  border-radius: 50%;
-  background: var(--paper);
-  color: var(--ink);
-  overflow: hidden;
+  border-radius: 14px;
+  background: transparent;
+  color: inherit;
+  overflow: visible;
 }
 
 .method-choice.active .method-logo {
-  background: var(--ink);
+  background: rgba(246, 242, 232, 0.1);
+  box-shadow: inset 0 0 0 1px rgba(246, 242, 232, 0.18);
 }
 
 .method-logo[data-logo="balance"] i {
@@ -2823,9 +2848,13 @@ input:focus-visible {
   align-items: center;
   text-align: center;
   border-radius: 32px;
+  --result-grad-a: #6e72f8;
+  --result-grad-b: #6d70eb;
+  --result-grad-c: #eb7470;
+  --result-glow: #5aaaf0;
   background:
-    radial-gradient(circle at 84% 8%, rgba(155, 216, 229, 0.42), transparent 30%),
-    linear-gradient(145deg, #6e72f8 0%, #6d70eb 54%, #eb7470 100%);
+    radial-gradient(circle at 84% 8%, color-mix(in srgb, var(--result-glow), transparent 64%), transparent 34%),
+    linear-gradient(145deg, var(--result-grad-a) 0%, var(--result-grad-b) 54%, var(--result-grad-c) 100%);
   box-shadow: var(--card-shadow);
 }
 

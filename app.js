@@ -39,6 +39,22 @@ const profileLogos = {
   fire: "fire",
 };
 
+const profileBadges = {
+  kakeibo: "assets/badges/badge_zen_accountant.svg",
+  rule503020: "assets/badges/badge_balanced_harmonist.svg",
+  zero: "assets/badges/badge_money_architect.svg",
+  sinking: "assets/badges/badge_goal_crusher.svg",
+  fire: "assets/badges/badge_freedom_fighter.svg",
+};
+
+const profileCardThemes = {
+  kakeibo: { a: "#6fcf6f", b: "#2d5a2d", c: "#0a180a", glow: "#7fdf7f" },
+  rule503020: { a: "#7abcf8", b: "#3a6ab0", c: "#080d1a", glow: "#5aaaf0" },
+  zero: { a: "#f0c040", b: "#b08020", c: "#0d0a02", glow: "#f0c040" },
+  sinking: { a: "#ee88ff", b: "#8a20b0", c: "#0a030e", glow: "#cc55ee" },
+  fire: { a: "#ff7020", b: "#cc2000", c: "#080200", glow: "#ffcc40" },
+};
+
 const budgetTemplates = {
   kakeibo: [["Food", "Daily log limit", "Rp 1.600.000"], ["Transport", "Commute tracker", "Rp 900.000"], ["Impulse", "Review weekly", "Rp 600.000"]],
   rule503020: [["Needs", "Rent, food, transport", "Rp 4.000.000"], ["Wants", "Fun money & lifestyle", "Rp 2.400.000"], ["Savings", "Goals and debt payoff", "Rp 1.600.000"]],
@@ -332,14 +348,23 @@ function initQuiz() {
 
 function renderResult(methodKey) {
   const data = methods[methodKey];
-  document.querySelector("#profileMedal").dataset.logo = profileLogos[methodKey];
+  const resultCard = document.querySelector(".result-card");
+  const theme = profileCardThemes[methodKey];
+  if (resultCard && theme) {
+    resultCard.style.setProperty("--result-grad-a", theme.a);
+    resultCard.style.setProperty("--result-grad-b", theme.b);
+    resultCard.style.setProperty("--result-grad-c", theme.c);
+    resultCard.style.setProperty("--result-glow", theme.glow);
+  }
+  const medalImg = document.querySelector("#profileMedalImg");
+  if (medalImg) medalImg.src = profileBadges[methodKey] || profileBadges.rule503020;
   document.querySelector("#resultBadge").textContent = data.badge;
   document.querySelector("#resultMethod").textContent = data.method;
   document.querySelector("#resultCopy").textContent = data.copy;
   document.querySelector("#methodGrid").innerHTML = Object.entries(methods).map(([key, item]) => `
     <button class="method-choice ${key === methodKey ? "active" : ""}" type="button" data-method="${key}">
       <span class="method-copy"><strong>${item.method}</strong><span>${item.badge}</span></span>
-      <span class="method-logo" data-logo="${profileLogos[key]}" aria-hidden="true"><i></i></span>
+      <span class="method-logo" aria-hidden="true"><img class="badge-svg" alt="" src="${profileBadges[key] || profileBadges.rule503020}" /></span>
     </button>
   `).join("");
 }
@@ -450,7 +475,8 @@ function initProfile() {
   const methodKey = getState().selectedMethod || "rule503020";
   const data = methods[methodKey];
   const ruleData = profileRules[methodKey];
-  document.querySelector("#badgeRoomLogo").dataset.logo = profileLogos[methodKey];
+  const badgeImg = document.querySelector("#badgeRoomLogoImg");
+  if (badgeImg) badgeImg.src = profileBadges[methodKey] || profileBadges.rule503020;
   document.querySelector("#profileBadgeName").textContent = data.badge;
   document.querySelector("#profileBadgeCopy").textContent = data.copy;
   document.querySelector("#profileMethodName").textContent = data.method;
