@@ -104,6 +104,50 @@ function roundTo(value, step) {
   return Math.round(number / step) * step;
 }
 
+function getDefaultAccounts() {
+  return [
+    { id: "bank", name: "Tabungan", provider: "Bank", balance: 12450000 },
+    { id: "gopay", name: "GoPay", provider: "E-wallet", balance: 350000 },
+    { id: "cash", name: "Cash", provider: "Dompet", balance: 120000 },
+    { id: "gold_online", name: "Emas online", provider: "Treasury", balance: 7600000, meta: "Online · 6.4g" },
+    { id: "gold_physical", name: "Emas fisik", provider: "Antam", balance: 7200000, meta: "Fisik · 6.0g" },
+    { id: "stocks", name: "Saham", provider: "Bibit", balance: 4250000, meta: "Investasi · 3 emiten" },
+  ];
+}
+
+function ensureAccountsSeed(accounts) {
+  const defaults = getDefaultAccounts();
+  const existing = Array.isArray(accounts) ? accounts : [];
+  const legacyGold = existing.find((item) => item?.id === "gold");
+  const migratedExisting = legacyGold ? [
+    ...existing.filter((item) => item?.id !== "gold"),
+    {
+      id: "gold_online",
+      name: "Emas online",
+      provider: "Treasury",
+      balance: roundTo((Number(legacyGold.balance) || 0) * 0.52, 50000),
+      meta: "Online · 6.4g",
+    },
+    {
+      id: "gold_physical",
+      name: "Emas fisik",
+      provider: "Antam",
+      balance: Math.max(0, (Number(legacyGold.balance) || 0) - roundTo((Number(legacyGold.balance) || 0) * 0.52, 50000)),
+      meta: "Fisik · 6.0g",
+    },
+  ] : existing;
+  const merged = defaults.map((fallback) => {
+    const current = migratedExisting.find((item) => item?.id === fallback.id);
+    return current ? { ...fallback, ...current } : fallback;
+  });
+  return merged;
+}
+
+function parseGoldGram(meta) {
+  const matched = String(meta || "").match(/(\d+(?:\.\d+)?)g/i);
+  return Number(matched?.[1] || 0);
+}
+
 function generateInitialBudgets(methodKey, monthlyIncome) {
   const templates = budgetTemplates[methodKey] || budgetTemplates.rule503020;
   const parsedTemplates = templates.map(([name, hint, limit]) => ({
@@ -475,12 +519,8 @@ function initDashboard() {
     heroCard.style.setProperty("--hero-glow", heroTheme.glow);
   }
 
-  const accounts = Array.isArray(state.accounts) && state.accounts.length ? state.accounts : [
-    { id: "bank", name: "Tabungan", provider: "Bank", balance: 12450000 },
-    { id: "gopay", name: "GoPay", provider: "E-wallet", balance: 350000 },
-    { id: "cash", name: "Cash", provider: "Dompet", balance: 120000 },
-  ];
-  if (!state.accounts) setState({ accounts });
+  const accounts = ensureAccountsSeed(state.accounts);
+  if (JSON.stringify(state.accounts || []) !== JSON.stringify(accounts)) setState({ accounts });
   const accountsSum = accounts.reduce((sum, acc) => sum + (Number(acc.balance) || 0), 0);
 
   const spendRatios = [0.62, 0.38, 0.74, 0.45, 0.28];
@@ -536,28 +576,115 @@ function initDashboard() {
 
 function initAccounts() {
   const state = getState();
-  const accounts = Array.isArray(state.accounts) && state.accounts.length ? state.accounts : [
-    { id: "bank", name: "Tabungan", provider: "Bank", balance: 12450000 },
-    { id: "gopay", name: "GoPay", provider: "E-wallet", balance: 350000 },
-    { id: "cash", name: "Cash", provider: "Dompet", balance: 120000 },
-  ];
-  if (!state.accounts) setState({ accounts });
+  const accounts = ensureAccountsSeed(state.accounts);
+  if (JSON.stringify(state.accounts || []) !== JSON.stringify(accounts)) setState({ accounts });
 
-  const accountsGrid = document.querySelector("#accountsGrid");
+  const liquidAccountsList = document.querySelector("#liquidAccountsList");
+  const assetAccountsList = document.querySelector("#assetAccountsList");
   const accountsTotal = document.querySelector("#accountsTotal");
-  if (accountsGrid) {
-    const icons = { bank: "🏦", gopay: "💳", cash: "💵" };
-    accountsGrid.innerHTML = accounts.map((acc) => `
-      <div class="account-row">
+  const icons = { bank: "🏦", gopay: "💳", cash: "💵", gold_online: "🪙", gold_physical: "🥇", stocks: "📈" };
+  const renderAccountRow = (acc) => `
+      <${acc.href ? "a" : "div"} class="account-row${acc.href ? " account-row-link" : ""}"${acc.href ? ` href="${acc.href}"` : ""}>
         <div class="account-icon" aria-hidden="true">${icons[acc.id] || "💰"}</div>
-        <div class="account-main"><b>${acc.name}</b><span>${acc.provider}</span></div>
+        <div class="account-main"><b>${acc.name}</b><span>${acc.meta ? `${acc.provider} · ${acc.meta}` : acc.provider}</span></div>
         <div class="account-balance">Rp ${formatIDR(acc.balance)}</div>
-      </div>
-    `).join("");
+      </${acc.href ? "a" : "div"}>
+    `;
+  const liquidAccounts = accounts.filter((acc) => ["bank", "gopay", "cash"].includes(acc.id));
+  const goldAccounts = accounts.filter((acc) => ["gold_online", "gold_physical"].includes(acc.id));
+  const stockAccounts = accounts.filter((acc) => !["bank", "gopay", "cash", "gold_online", "gold_physical"].includes(acc.id));
+  const totalGoldBalance = goldAccounts.reduce((sum, acc) => sum + (Number(acc.balance) || 0), 0);
+  const totalGoldGram = goldAccounts.reduce((sum, acc) => {
+    const matched = String(acc.meta || "").match(/(\d+(?:\.\d+)?)g/i);
+    return sum + Number(matched?.[1] || 0);
+  }, 0);
+  const goldProviders = [...new Set(goldAccounts.map((acc) => acc.provider).filter(Boolean))];
+  const assetAccounts = [
+    ...(goldAccounts.length ? [{
+      id: "gold_online",
+      name: "Emas",
+      provider: goldProviders.join(" + "),
+      balance: totalGoldBalance,
+      meta: `Online + fisik · ${totalGoldGram.toFixed(1)}g`,
+      href: "gold.html",
+    }] : []),
+    ...stockAccounts,
+  ];
+
+  if (liquidAccountsList) {
+    liquidAccountsList.innerHTML = liquidAccounts.map(renderAccountRow).join("");
+  }
+  if (assetAccountsList) {
+    assetAccountsList.innerHTML = assetAccounts.map(renderAccountRow).join("");
   }
   if (accountsTotal) {
     const total = accounts.reduce((sum, acc) => sum + (Number(acc.balance) || 0), 0);
     accountsTotal.textContent = `Rp ${formatIDR(total)}`;
+  }
+}
+
+function initGold() {
+  const state = getState();
+  const accounts = ensureAccountsSeed(state.accounts);
+  if (JSON.stringify(state.accounts || []) !== JSON.stringify(accounts)) setState({ accounts });
+
+  const goldAccounts = accounts.filter((acc) => ["gold_online", "gold_physical"].includes(acc.id));
+  const totalValue = goldAccounts.reduce((sum, acc) => sum + (Number(acc.balance) || 0), 0);
+  const totalGram = goldAccounts.reduce((sum, acc) => sum + parseGoldGram(acc.meta), 0);
+  const avgPrice = totalGram ? Math.round(totalValue / totalGram) : 0;
+
+  const totalValueEl = document.querySelector("#goldTotalValue");
+  if (totalValueEl) totalValueEl.textContent = `Rp ${formatIDR(totalValue)}`;
+
+  const heroMetaEl = document.querySelector("#goldHeroMeta");
+  if (heroMetaEl) heroMetaEl.textContent = `${totalGram.toFixed(1)}g total kepemilikan`;
+
+  const totalGramEl = document.querySelector("#goldTotalGram");
+  if (totalGramEl) totalGramEl.textContent = `${totalGram.toFixed(1)}g`;
+
+  const avgPriceEl = document.querySelector("#goldAvgPrice");
+  if (avgPriceEl) avgPriceEl.textContent = `Rp ${formatIDR(avgPrice)}`;
+
+  const breakdownMetaEl = document.querySelector("#goldBreakdownMeta");
+  if (breakdownMetaEl) breakdownMetaEl.textContent = `${goldAccounts.length} sumber`;
+
+  const breakdownListEl = document.querySelector("#goldBreakdownList");
+  if (breakdownListEl) {
+    breakdownListEl.innerHTML = goldAccounts.map((acc) => {
+      const label = acc.id === "gold_online" ? "On" : "Fi";
+      const kind = acc.id === "gold_online" ? "Online" : "Fisik";
+      const gram = parseGoldGram(acc.meta);
+      return `
+        <div class="vault-item">
+          <span class="vault-icon">${label}</span>
+          <div>
+            <b>${acc.name}</b>
+            <span>${acc.provider} · ${kind} · ${gram.toFixed(1)}g</span>
+          </div>
+          <em>Rp ${formatIDR(acc.balance)}</em>
+        </div>
+      `;
+    }).join("");
+  }
+
+  const notesListEl = document.querySelector("#goldNotesList");
+  if (notesListEl) {
+    notesListEl.innerHTML = goldAccounts.map((acc) => {
+      const label = acc.id === "gold_online" ? "Tr" : "An";
+      const note = acc.id === "gold_online"
+        ? "Likuid, gampang top up, cocok buat akumulasi rutin."
+        : "Cocok buat simpan jangka panjang dan koleksi fisik.";
+      return `
+        <div class="vault-item">
+          <span class="vault-icon">${label}</span>
+          <div>
+            <b>${acc.provider}</b>
+            <span>${note}</span>
+          </div>
+          <em>${acc.id === "gold_online" ? "Online" : "Fisik"}</em>
+        </div>
+      `;
+    }).join("");
   }
 }
 
@@ -804,6 +931,7 @@ if (page === "result") initResult();
 if (page === "budget-preview") initBudgetPreview();
 if (page === "dashboard") initDashboard();
 if (page === "accounts") initAccounts();
+if (page === "gold") initGold();
 if (page === "budget") initBudgetPage();
 if (page === "profile") initProfile();
 if (page === "settings") initSettings();

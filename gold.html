@@ -3,47 +3,57 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>FinPlanner Gold Vault</title>
+    <title>FinPlanner Brankas Emas</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body data-page="gold">
     <main class="stage">
       <aside class="brand-panel" aria-label="Arah visual">
         <div class="brand-pill"><span class="brand-dot"></span> Brankas Emas</div>
-        <h1>Gold Vault</h1>
-        <p>Unique Indonesian advantage: harga Antam, inventaris gram, dan integrasi goal.</p>
+        <h1>Brankas Emas</h1>
+        <p>Detail total emas kamu, mulai dari online sampai fisik, lengkap dengan gram dan estimasi nilainya.</p>
       </aside>
       <section class="phone-shell" aria-label="Mobile app preview">
         <div class="app">
           <section class="screen">
             <div class="topbar main-top">
               <div class="main-title-block">
-                <span>Antam Today</span>
-                <h2>Gold Vault</h2>
+                <span>Gold detail</span>
+                <h2>Brankas emas</h2>
               </div>
-              <button class="round-action" type="button" data-open-sheet="gold" aria-label="Tambah emas">+</button>
             </div>
             <div class="content main-content">
               <div class="gold-hero-card">
-                <span>Harga Antam hari ini</span>
-                <strong>Rp 1.342K/g</strong>
+                <span>Total emas</span>
+                <strong id="goldTotalValue">Rp 0</strong>
+                <p class="asset-sub" id="goldHeroMeta">0g total kepemilikan</p>
                 <div class="gold-chart" aria-hidden="true">
                   <i style="height: 44px"></i><i style="height: 52px"></i><i style="height: 48px"></i><i style="height: 64px"></i><i style="height: 72px"></i><i style="height: 68px"></i><i style="height: 84px"></i>
                 </div>
               </div>
               <div class="gold-summary">
-                <div class="summary-card"><i>g</i><b>7 gram</b><span>Total kepemilikan</span></div>
-                <div class="summary-card"><i>Rp</i><b>Rp 8.9M</b><span>Avg cost value</span></div>
+                <div class="summary-card"><i>g</i><b id="goldTotalGram">0g</b><span>Total kepemilikan</span></div>
+                <div class="summary-card"><i>Rp</i><b id="goldAvgPrice">Rp 0</b><span>Estimasi / gram</span></div>
               </div>
-              <div class="vault-list">
-                <div class="vault-item"><span class="vault-icon">An</span><div><b>Antam 5g</b><span>Beli Rp 1.210K/g &middot; Toko LM</span></div><em>+10.9%</em></div>
-                <div class="vault-item"><span class="vault-icon">UB</span><div><b>UBS 2g</b><span>Beli Rp 1.185K/g &middot; Marketplace</span></div><em>+13.2%</em></div>
-                <div class="vault-item"><span class="vault-icon">Ng</span><div><b>Goal Nikah</b><span>Kurang 13 gram lagi dari target 20g</span></div><em>35%</em></div>
+              <div class="section-head">
+                <b>Breakdown</b>
+                <span id="goldBreakdownMeta">2 sumber</span>
+              </div>
+              <div class="vault-list" id="goldBreakdownList"></div>
+              <div class="section-head">
+                <b>Catatan</b>
+                <span>Detail penyimpanan</span>
+              </div>
+              <div class="vault-list" id="goldNotesList"></div>
+              <div class="coach-card gold-note-card">
+                <span>Next move</span>
+                <b>Bedakan pembelian online dan fisik biar valuasi emas lebih gampang dibaca.</b>
+                <p>Kalau nanti kamu tambah data emas baru, halaman ini bisa jadi ringkasan yang paling enak buat lihat komposisinya.</p>
               </div>
             </div>
             <nav class="bottom-nav" aria-label="Main navigation">
-              <a class="active" aria-current="page" href="dashboard.html"><span class="nav-symbol" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 3.2 3 10.3v10.3h6.4v-6.4h5.2v6.4H21V10.3L12 3.2zm7.2 16H16v-6.4H8v6.4H4.8v-8.1L12 5.5l7.2 5.6v8.1z"/></svg></span>Home</a>
-              <a href="accounts.html"><span class="nav-symbol" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M3.5 7.5A3 3 0 0 1 6.5 4.5h11A2.5 2.5 0 0 1 20 7v1h-7a3 3 0 0 0 0 6h7v1a2.5 2.5 0 0 1-2.5 2.5h-11a3 3 0 0 1-3-3v-9zM20 12h-7a1.5 1.5 0 0 1 0-3h7v3zm-2.2-1.5a.8.8 0 1 0 0 1.6.8.8 0 0 0 0-1.6z"/></svg></span>Saldo</a>
+              <a href="dashboard.html"><span class="nav-symbol" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 3.2 3 10.3v10.3h6.4v-6.4h5.2v6.4H21V10.3L12 3.2zm7.2 16H16v-6.4H8v6.4H4.8v-8.1L12 5.5l7.2 5.6v8.1z"/></svg></span>Home</a>
+              <a class="active" aria-current="page" href="accounts.html"><span class="nav-symbol" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M3.5 7.5A3 3 0 0 1 6.5 4.5h11A2.5 2.5 0 0 1 20 7v1h-7a3 3 0 0 0 0 6h7v1a2.5 2.5 0 0 1-2.5 2.5h-11a3 3 0 0 1-3-3v-9zM20 12h-7a1.5 1.5 0 0 1 0-3h7v3zm-2.2-1.5a.8.8 0 1 0 0 1.6.8.8 0 0 0 0-1.6z"/></svg></span>Aset</a>
               <button class="nav-add" type="button" data-nav-add data-sheet-target="gold" aria-label="Tambah"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M11 5h2v14h-2z"/><path fill="currentColor" d="M5 11h14v2H5z"/></svg></button>
               <a href="insights.html"><span class="nav-symbol" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 19.5V4.5h1.8v15h15v1.8H4.5zm3-2.7v-6h2.4v6H7.5zm4.8 0v-9h2.4v9h-2.4zm4.8 0v-4.5h2.4v4.5h-2.4z"/></svg></span>Statistik</a>
               <a href="profile.html"><span class="nav-symbol" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 12.2a4.2 4.2 0 1 0-4.2-4.2 4.2 4.2 0 0 0 4.2 4.2zm0-6.6a2.4 2.4 0 1 1-2.4 2.4A2.4 2.4 0 0 1 12 5.6z"/><path fill="currentColor" d="M4.8 20.2a7.2 7.2 0 0 1 14.4 0h-1.8a5.4 5.4 0 0 0-10.8 0H4.8z"/></svg></span>Profile</a>
