@@ -3642,9 +3642,124 @@ body.light-mode .settings-row,
 body.light-mode .mini-insight,
 body.light-mode .option-card,
 body.light-mode .method-choice,
-body.light-mode .budget-item {
+body.light-mode .budget-item,
+body.light-mode .account-row {
   background: rgba(21, 21, 21, 0.06);
   color: var(--ink);
+}
+
+body.light-mode .budget-item strong,
+body.light-mode .budget-item em {
+  color: var(--ink);
+}
+
+body.light-mode .budget-item span,
+body.light-mode .budget-item-meter span {
+  color: rgba(21, 21, 21, 0.62);
+}
+
+body.light-mode .budget-meter {
+  background: rgba(21, 21, 21, 0.12);
+}
+
+body.light-mode .detail-pill {
+  background: rgba(21, 21, 21, 0.05);
+  color: rgba(21, 21, 21, 0.68);
+  box-shadow: inset 0 0 0 1px rgba(21, 21, 21, 0.1);
+}
+
+body.light-mode .detail-pill svg {
+  color: rgba(21, 21, 21, 0.54);
+}
+
+body.light-mode .highlight-card {
+  background:
+    radial-gradient(circle at 86% 10%, rgba(240, 107, 97, 0.12), transparent 34%),
+    rgba(21, 21, 21, 0.05);
+  box-shadow: 0 18px 34px rgba(21, 21, 21, 0.08);
+}
+
+body.light-mode .highlight-card b {
+  color: var(--ink);
+}
+
+body.light-mode .highlight-card span,
+body.light-mode .highlight-card p {
+  color: rgba(21, 21, 21, 0.62);
+}
+
+body.light-mode .highlight-close {
+  background: rgba(21, 21, 21, 0.05);
+  color: rgba(21, 21, 21, 0.52);
+  box-shadow: inset 0 0 0 1px rgba(21, 21, 21, 0.08);
+}
+
+body.light-mode .cashflow-card {
+  background:
+    radial-gradient(circle at 82% 16%, rgba(232, 184, 95, 0.16), transparent 32%),
+    rgba(21, 21, 21, 0.05);
+  box-shadow: 0 18px 34px rgba(21, 21, 21, 0.08);
+}
+
+body.light-mode .cashflow-card strong,
+body.light-mode .cashflow-row b {
+  color: var(--ink);
+}
+
+body.light-mode .cashflow-card span,
+body.light-mode .cashflow-row small {
+  color: rgba(21, 21, 21, 0.62);
+}
+
+body.light-mode .accounts-group-label,
+body.light-mode .account-main span {
+  color: rgba(21, 21, 21, 0.62);
+}
+
+body.light-mode .account-main b,
+body.light-mode .account-balance {
+  color: var(--ink);
+}
+
+body.light-mode .account-icon {
+  background: rgba(21, 21, 21, 0.08);
+  color: var(--ink);
+}
+
+body.light-mode .income-summary {
+  background:
+    radial-gradient(circle at 86% 10%, rgba(108, 112, 246, 0.08), transparent 34%),
+    rgba(21, 21, 21, 0.05);
+  color: var(--ink);
+}
+
+body.light-mode .income-summary b {
+  color: var(--ink);
+}
+
+body.light-mode .income-summary span,
+body.light-mode .income-summary p {
+  color: rgba(21, 21, 21, 0.62);
+}
+
+body.light-mode .budget-totals-card {
+  background: rgba(21, 21, 21, 0.05);
+  box-shadow: 0 18px 34px rgba(21, 21, 21, 0.08);
+}
+
+body.light-mode .budget-totals-card span {
+  color: rgba(21, 21, 21, 0.58);
+}
+
+body.light-mode .budget-totals-card b {
+  color: var(--ink);
+}
+
+body.light-mode .mini-icon,
+body.light-mode .ghost-btn.income-save {
+  background: rgba(21, 21, 21, 0.06);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1px rgba(21, 21, 21, 0.08);
 }
 
 body.light-mode .tx-item span,
