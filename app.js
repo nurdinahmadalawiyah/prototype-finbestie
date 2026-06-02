@@ -453,6 +453,14 @@ function initBudgetPreview() {
 }
 
 function initDashboard() {
+  const highlightCard = document.querySelector("#dashboardHighlight");
+  const closeHighlight = document.querySelector("[data-close-highlight]");
+  if (highlightCard && closeHighlight) {
+    closeHighlight.addEventListener("click", () => {
+      highlightCard.hidden = true;
+    });
+  }
+
   const budgetList = document.querySelector("#dashboardBudgetList");
   if (!budgetList) return;
   const state = getState();
@@ -524,10 +532,6 @@ function initDashboard() {
   const heroSavings = document.querySelector("#heroSavings");
   if (heroSavings) heroSavings.textContent = `Rp ${formatIDR(accountsSum)}`;
 
-  const heroIncome = document.querySelector("#heroIncome");
-  if (heroIncome && typeof state.monthlyIncome === "number") {
-    heroIncome.textContent = `Rp ${formatIDR(state.monthlyIncome)}`;
-  }
 }
 
 function initAccounts() {
