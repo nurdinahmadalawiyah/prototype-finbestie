@@ -203,6 +203,12 @@ button {
   text-decoration: none;
 }
 
+.icon-btn svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
 .skip-btn,
 .ghost-btn {
   border: 0;
