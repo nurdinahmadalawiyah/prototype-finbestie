@@ -45,3 +45,42 @@ Treat `Budgetin` as the source-of-truth product name unless the user explicitly 
 - `app.js` acts as the effective source of truth for persona definitions, budget templates, account mock data, and formatting helpers
 - Before refactoring shared logic, check whether multiple HTML screens depend on the same DOM hooks or local storage assumptions
 - Be careful when changing naming, because repository naming and in-product branding are not yet aligned
+
+## Product direction: common vs exclusive method features
+
+The product's core value is the budgeting method recommendation engine. Because of that, not every method-related surface should become a fully exclusive feature. The recommended product shape is:
+
+- shared core features for every user
+- method-specific guidance, automation, alerts, and workflows as the differentiation layer
+
+### Shared core features
+
+These should stay available across all methods:
+
+- monthly income input
+- auto-budget setup / preview
+- editable budget categories and limits
+- transaction logging
+- category-based expense tracking
+- dashboard for budget vs spent
+- goals / financial targets
+- weekly or monthly insights
+- quiz + method recommendation engine
+- manual method switching
+
+### Method-exclusive or method-specific features
+
+These are the features that should differentiate each budgeting method over time:
+
+- `Okane Kakeibo`: daily spending journal, weekly reflection prompts, emotional spending notes
+- `50/30/20 Rule`: bucket ratio monitor, ratio deviation alerts, rebalance suggestions
+- `Zero-Based Budgeting`: unassigned money warning, assignment-first flow, category reallocation tools
+- `Sinking Fund Strategy`: goal bucket builder, recurring contribution planner, per-goal progress tracking
+- `FIRE Mode`: saving rate tracker, FI progress simulator, expense-cut recommendations
+
+### Important product principle
+
+- profile screens and method explanation screens do not need to be fully exclusive by default
+- many screens can remain shared, while the content, nudges, alerts, and workflows adapt by method
+- the recommendation engine should feel consequential, not cosmetic
+- treat method-specific features as an experience layer on top of the shared budgeting core

@@ -32,8 +32,9 @@ Urutan flow utama yang terlihat dari struktur project:
 2. `auth.html` - auth / masuk
 3. `quiz.html` - quiz profil budgeting
 4. `result.html` - hasil metode budgeting
-5. `budget-preview.html` - preview auto-budget
-6. `dashboard.html` - dashboard utama
+5. `budget-preview.html` - input income bulanan
+6. `auto-budget-preview.html` - preview auto-budget yang editable
+7. `dashboard.html` - dashboard utama
 
 Setelah itu ada layar pendukung:
 

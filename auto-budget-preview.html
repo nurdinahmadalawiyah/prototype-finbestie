@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Budgetin Auto-Budget Preview</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="auto-budget-preview">
+    <main class="stage">
+      <aside class="brand-panel" aria-label="Arah visual">
+        <div class="brand-pill"><span class="brand-dot"></span> Recommendation Engine</div>
+        <h1>Auto-Budget Preview</h1>
+        <p>Preview budget otomatis yang dibentuk dari hasil method recommendation engine dan income bulanan user.</p>
+      </aside>
+      <section class="phone-shell" aria-label="Mobile app preview">
+        <div class="app">
+          <section class="screen">
+            <div class="topbar main-top budget-topbar">
+              <a class="icon-btn budget-back" href="budget-preview.html" aria-label="Kembali">&#8249;</a>
+              <div class="main-title-block">
+                <span>Auto-Budget Preview</span>
+                <h2>Review dulu</h2>
+              </div>
+            </div>
+            <div class="content main-content">
+              <div class="method-summary income-summary profile-preview-card" id="previewProfileCard">
+                <span>Recommended setup</span>
+                <b id="previewMethodName">-</b>
+                <p id="previewMethodCopy">Budget otomatis akan muncul di sini.</p>
+              </div>
+              <div class="budget-totals-card" aria-label="Ringkasan preview budget">
+                <div><span>Income</span><b id="previewIncomeTotal">Rp 0</b></div>
+                <div><span>Allocated</span><b id="previewAllocatedTotal">Rp 0</b></div>
+              </div>
+              <p class="allocation-note" id="previewAllocationNote">Total alokasi akan muncul di sini.</p>
+              <div class="budget-snapshot">
+                <div class="section-head">
+                  <b>Auto-budget</b>
+                  <span>Editable before dashboard</span>
+                </div>
+                <div class="budget-list" id="previewBudgetList"></div>
+              </div>
+              <div class="method-summary preview-why-card profile-why-card" id="previewWhyCard">
+                <span>Kenapa setup-nya begini?</span>
+                <b id="previewWhyTitle">-</b>
+                <p id="previewWhySummary">-</p>
+              </div>
+              <div class="rule-grid" id="previewRuleGrid" aria-label="Aturan auto-budget"></div>
+            </div>
+            <div class="bottom-dock">
+              <button class="primary-btn" id="previewToDashboard" type="button">Masuk ke dashboard -></button>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>

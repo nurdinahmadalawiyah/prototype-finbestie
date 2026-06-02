@@ -66,23 +66,23 @@ const budgetTemplates = {
 const profileRules = {
   kakeibo: {
     summary: "Catat semua income dan expense secara detail, lalu review kebiasaan belanja tiap minggu.",
-    rules: [["Log", "Daily", "Semua transaksi masuk buku kas."], ["Reflect", "Weekly", "Lihat kategori yang paling bocor."], ["Adjust", "Next", "Turunkan limit setelah pola terlihat."]],
+    rules: [["Log", "Daily", "Catat semua transaksi biar cashflow harian kebaca jelas."], ["Reflect", "Weekly", "Lihat pola belanja dan kategori yang paling sering bocor."], ["Adjust", "Next", "Sesuaikan limit bulan berikutnya dari pola yang sudah kelihatan."]],
   },
   rule503020: {
     summary: "Bagi income bulanan ke tiga bucket besar supaya budgeting terasa ringan tapi tetap terarah.",
-    rules: [["50%", "Needs", "Makan, sewa, transport, dan tagihan utama."], ["30%", "Wants", "Hiburan, jajan, belanja non-esensial."], ["20%", "Save", "Tabungan, goals, emergency fund, dan utang."]],
+    rules: [["Split", "Income", "Bagi income ke bucket needs, wants, dan save sejak awal bulan."], ["Spend", "Mindfully", "Pakai tiap bucket sesuai porsinya supaya lifestyle tetap aman."], ["Review", "Monthly", "Cek apakah pembagian 50/30/20 masih cocok dengan kondisi kamu."]],
   },
   zero: {
     summary: "Setiap rupiah punya tugas sebelum bulan berjalan, jadi tidak ada uang yang menganggur.",
-    rules: [["Assign", "Income", "Masukkan seluruh income ke kategori."], ["Zero", "Idle", "Sisa uang harus jelas tujuannya."], ["Review", "Priority", "Pindahkan dana saat prioritas berubah."]],
+    rules: [["Assign", "Income", "Kasih tugas ke setiap rupiah sebelum uang mulai dipakai."], ["Track", "Usage", "Pantau kategori yang kepakai supaya alokasi tetap rapi."], ["Adjust", "Priority", "Pindahkan budget saat prioritas berubah tanpa bikin uang idle."]],
   },
   sinking: {
     summary: "Uang diarahkan ke target spesifik, lalu kontribusi rutin dibuat otomatis.",
-    rules: [["Name", "Goal", "Buat target yang jelas."], ["Split", "Monthly", "Cicil dana sedikit demi sedikit."], ["Track", "Progress", "Pantau progress sampai siap dipakai."]],
+    rules: [["Name", "Goal", "Pisahkan target finansial jadi pos yang spesifik dan jelas."], ["Contribute", "Monthly", "Isi tiap sinking fund sedikit demi sedikit setiap bulan."], ["Track", "Progress", "Pantau progresnya sampai dana siap dipakai tanpa ganggu cashflow utama."]],
   },
   fire: {
     summary: "Mode agresif untuk menekan expense dan memperbesar porsi investasi jangka panjang.",
-    rules: [["Lean", "Spend", "Potong expense yang tidak penting."], ["Grow", "Invest", "Naikkan saving dan investing rate."], ["Freedom", "Plan", "Hitung jalan menuju pensiun dini."]],
+    rules: [["Cut", "Spend", "Tekan pengeluaran yang tidak penting supaya saving rate naik."], ["Grow", "Invest", "Arahkan sisa uang ke tabungan dan investasi jangka panjang."], ["Plan", "Freedom", "Hitung progres menuju target kebebasan finansial."]],
   },
 };
 
@@ -492,8 +492,132 @@ function initBudgetPreview() {
     if (!parsed) return;
     const budgets = generateInitialBudgets(methodKey, parsed);
     setState({ selectedMethod: methodKey, monthlyIncome: parsed, budgets });
+    location.href = "auto-budget-preview.html";
+  });
+}
+
+function initAutoBudgetPreview() {
+  const state = getState();
+  const methodKey = state.selectedMethod || "rule503020";
+  const monthlyIncome = Number(state.monthlyIncome || 0);
+  let budgets = Array.isArray(state.budgets) ? state.budgets : [];
+
+  if (!monthlyIncome || !budgets.length) {
+    location.href = "budget-preview.html";
+    return;
+  }
+
+  const method = methods[methodKey] || methods.rule503020;
+  const ruleData = profileRules[methodKey] || profileRules.rule503020;
+  const theme = profileCardThemes[methodKey] || profileCardThemes.rule503020;
+
+  const methodNameEl = document.querySelector("#previewMethodName");
+  const methodCopyEl = document.querySelector("#previewMethodCopy");
+  const incomeTotalEl = document.querySelector("#previewIncomeTotal");
+  const allocatedTotalEl = document.querySelector("#previewAllocatedTotal");
+  const allocationNoteEl = document.querySelector("#previewAllocationNote");
+  const listEl = document.querySelector("#previewBudgetList");
+  const whyTitleEl = document.querySelector("#previewWhyTitle");
+  const whySummaryEl = document.querySelector("#previewWhySummary");
+  const ruleGridEl = document.querySelector("#previewRuleGrid");
+  const nextButton = document.querySelector("#previewToDashboard");
+  const profileCardEl = document.querySelector("#previewProfileCard");
+  const whyCardEl = document.querySelector("#previewWhyCard");
+
+  if (!listEl || !nextButton) return;
+
+  [profileCardEl, whyCardEl].forEach((card) => {
+    if (!card || !theme) return;
+    card.style.setProperty("--profile-grad-a", theme.a);
+    card.style.setProperty("--profile-grad-b", theme.b);
+    card.style.setProperty("--profile-grad-c", theme.c);
+    card.style.setProperty("--profile-glow", theme.glow);
+  });
+
+  if (methodNameEl) methodNameEl.textContent = method.method;
+  if (methodCopyEl) methodCopyEl.textContent = `${method.copy} Kamu masih bisa edit limit tiap kategori sebelum masuk dashboard.`;
+  if (incomeTotalEl) incomeTotalEl.textContent = `Rp ${formatIDR(monthlyIncome)}`;
+  if (whyTitleEl) whyTitleEl.textContent = `Cara kerja ${method.method}`;
+  if (whySummaryEl) whySummaryEl.textContent = ruleData.summary;
+
+  if (ruleGridEl) {
+    ruleGridEl.innerHTML = ruleData.rules.map(([tag, title, copy]) => `
+      <div class="rule-card preview-rule-card">
+        <span>${tag}</span>
+        <b>${title}</b>
+        <p>${copy}</p>
+      </div>
+    `).join("");
+  }
+
+  function updateBudget(index, rawValue) {
+    const nextValue = Math.max(0, parseIDRString(rawValue));
+    budgets = budgets.map((item, itemIndex) => (
+      itemIndex === index
+        ? { ...item, limit: nextValue }
+        : item
+    ));
+    setState({ budgets });
+    renderList();
+  }
+
+  function renderList() {
+    const allocatedTotal = budgets.reduce((sum, item) => sum + (Number(item.limit) || 0), 0);
+    if (allocatedTotalEl) allocatedTotalEl.textContent = `Rp ${formatIDR(allocatedTotal)}`;
+    if (allocationNoteEl) {
+      const delta = monthlyIncome - allocatedTotal;
+      if (delta === 0) {
+        allocationNoteEl.textContent = "Total budget sudah pas dengan income bulanan kamu.";
+      } else if (delta > 0) {
+        allocationNoteEl.textContent = `Masih ada Rp ${formatIDR(delta)} yang belum dialokasikan.`;
+      } else {
+        allocationNoteEl.textContent = `Alokasi budget melebihi income sebesar Rp ${formatIDR(Math.abs(delta))}.`;
+      }
+    }
+
+    listEl.innerHTML = budgets.map((item, index) => `
+      <div class="budget-item preview-budget-item">
+        <i>${index + 1}</i>
+        <div>
+          <strong>${item.name}</strong>
+          <span>${item.hint}</span>
+          <label class="budget-inline-edit" aria-label="Limit ${item.name}">
+            <span class="income-prefix" aria-hidden="true">Rp</span>
+            <input
+              class="budget-inline-input"
+              type="text"
+              inputmode="numeric"
+              data-budget-index="${index}"
+              value="${item.limit ? formatIDR(item.limit) : ""}"
+              aria-label="Limit kategori ${item.name}"
+            />
+          </label>
+        </div>
+        <em>${Math.round(((Number(item.limit) || 0) / Math.max(1, monthlyIncome)) * 100)}%</em>
+      </div>
+    `).join("");
+  }
+
+  listEl.addEventListener("change", (event) => {
+    const input = event.target.closest("[data-budget-index]");
+    if (!input) return;
+    updateBudget(Number(input.dataset.budgetIndex), input.value);
+  });
+
+  listEl.addEventListener("keydown", (event) => {
+    const input = event.target.closest("[data-budget-index]");
+    if (!input || event.key !== "Enter") return;
+    event.preventDefault();
+    updateBudget(Number(input.dataset.budgetIndex), input.value);
+    input.blur();
+  });
+
+  nextButton.addEventListener("click", () => {
+    setState({ budgets });
     location.href = "dashboard.html";
   });
+
+  renderList();
 }
 
 function initDashboard() {
@@ -692,14 +816,22 @@ function initProfile() {
   const methodKey = getState().selectedMethod || "rule503020";
   const data = methods[methodKey];
   const ruleData = profileRules[methodKey];
+  const theme = profileCardThemes[methodKey] || profileCardThemes.rule503020;
   const badgeImg = document.querySelector("#badgeRoomLogoImg");
+  const ruleGrid = document.querySelector("#profileRuleGrid");
   if (badgeImg) badgeImg.src = profileBadges[methodKey] || profileBadges.rule503020;
+  if (ruleGrid && theme) {
+    ruleGrid.style.setProperty("--profile-rule-a", theme.a);
+    ruleGrid.style.setProperty("--profile-rule-b", theme.b);
+    ruleGrid.style.setProperty("--profile-rule-c", theme.c);
+    ruleGrid.style.setProperty("--profile-rule-glow", theme.glow);
+  }
   document.querySelector("#profileBadgeName").textContent = data.badge;
   document.querySelector("#profileBadgeCopy").textContent = data.copy;
   document.querySelector("#profileMethodName").textContent = data.method;
   document.querySelector("#profileMethodCopy").textContent = ruleData.summary;
   document.querySelector("#profileRuleGrid").innerHTML = ruleData.rules.map(([value, label, copy], index) => `
-    <div class="rule-card ${index === 1 ? "coral" : index === 2 ? "mint" : ""}">
+    <div class="rule-card profile-rule-card profile-rule-card-${index + 1}">
       <strong>${value}</strong><span>${label}</span><p>${copy}</p>
     </div>
   `).join("");
@@ -929,6 +1061,7 @@ if (page === "auth") initAuth();
 if (page === "quiz") initQuiz();
 if (page === "result") initResult();
 if (page === "budget-preview") initBudgetPreview();
+if (page === "auto-budget-preview") initAutoBudgetPreview();
 if (page === "dashboard") initDashboard();
 if (page === "accounts") initAccounts();
 if (page === "gold") initGold();
